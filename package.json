@@ -1,6 +1,6 @@
 {
     "name": "react-native-delightful-navigation",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "A library to create smooth and delightful animated transitions between screen",
     "main": "./lib/module/index.js",
     "types": "./lib/typescript/src/index.d.ts",
@@ -109,7 +109,10 @@
             "tagName": "v${version}"
         },
         "hooks": {
-            "before:init": ["npm run lint", "npm run test"]
+            "before:init": [
+                "npm run lint",
+                "npm run test"
+            ]
         },
         "npm": {
             "publish": true
