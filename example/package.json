@@ -1,7 +1,7 @@
 {
     "name": "react-native-delightful-navigation-example",
     "version": "1.0.0",
-    "main": "index.js",
+    "main": "expo-router/entry",
     "scripts": {
         "start": "expo start",
         "android": "expo start --android",
@@ -11,12 +11,17 @@
     "dependencies": {
         "@expo/metro-runtime": "~5.0.4",
         "expo": "~53.0.9",
+        "expo-constants": "~17.1.6",
+        "expo-linking": "~7.1.5",
+        "expo-router": "~5.0.7",
         "expo-status-bar": "~2.2.3",
         "react": "19.0.0",
         "react-dom": "19.0.0",
         "react-native": "0.79.2",
         "react-native-delightful-navigation": "link:../src",
         "react-native-reanimated": "^3.17.5",
+        "react-native-safe-area-context": "5.4.0",
+        "react-native-screens": "~4.10.0",
         "react-native-web": "~0.20.0",
         "zustand": "^4.5.6"
     },
