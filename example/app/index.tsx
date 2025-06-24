@@ -1,94 +1,52 @@
-import { Button, StyleSheet, Text, View } from "react-native"
-import React, { useState } from "react"
+import { Button, StyleSheet, View } from "react-native"
 import {
 	useDelightfulTransition,
 	XScreen,
 	XView,
 } from "react-native-delightful-navigation"
+import { useRouter } from "expo-router"
 
 export default function App() {
-	const { register, navigationWithTransition } = useDelightfulTransition("/")
+	const router = useRouter()
+	const { register, navigateWithTransition } = useDelightfulTransition("/")
 
-	const handlePress = () => {
-		navigationWithTransition({
+	const handleNavigation = () => {
+		navigateWithTransition({
 			destination: "/details",
-			navigationCallback: () => console.log("navigate"),
+			navigationCallback: () => {
+				router.navigate("/details")
+				// console.log("Navigate !")
+			},
 		})
-		// console.log(JSON.stringify(register.registerRef.current, null, 2))
 	}
 
 	return (
 		<XScreen {...register}>
-			<XView
-				{...register}
-				tag="Page"
-				style={styles.xView}
-			>
-				<View>
-					<View>
-						<XView
-							{...register}
-							tag="Header"
-							style={styles.xView}
-						>
-							<XView
-								{...register}
-								tag="Nav"
-								style={styles.xView}
-							>
-								<Text>Test nav</Text>
-							</XView>
-						</XView>
-					</View>
-				</View>
+			<View style={styles.container}>
 				<XView
 					{...register}
-					tag="Main"
-					style={styles.xView}
+					tag="button1"
+					style={styles.button}
+				/>
+				<XView
+					{...register}
+					tag="button2"
+					style={styles.button2}
 				>
 					<XView
 						{...register}
-						tag="Sidebar"
-						style={styles.xView}
-					>
-						<XView
-							{...register}
-							tag="Menu 1"
-							style={styles.xView}
-						/>
-						<XView
-							{...register}
-							tag="Menu 2"
-							style={styles.xView}
-						/>
-					</XView>
-					<XView
-						{...register}
-						tag="Content"
-						style={styles.xView}
-					>
-						<XView
-							{...register}
-							tag="Article 1"
-							style={styles.xView}
-						/>
-						<XView
-							{...register}
-							tag="Article 2"
-							style={styles.xView}
-						/>
-					</XView>
+						tag="inner-button"
+						style={styles.innerButton}
+					/>
 				</XView>
-				<XView
+				{/* <XView
 					{...register}
-					tag="Footer"
-					style={styles.xView}
-				/>
-			</XView>
-			<View style={styles.buttonNavigation}>
+					tag="button3"
+					style={styles.button}
+				/> */}
 				<Button
-					title="Navigate"
-					onPress={handlePress}
+					title="Go to Details"
+					onPress={handleNavigation}
 				/>
 			</View>
 		</XScreen>
@@ -96,13 +54,32 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-	xView: {
-		borderWidth: 1,
-		padding: 9,
-		gap: 20,
+	container: {
 		flex: 1,
+		alignItems: "center",
+		justifyContent: "center",
+		gap: 50,
 	},
-	buttonNavigation: {
-		marginBottom: 50,
+	button: {
+		margin: 20,
+		padding: 10,
+		borderWidth: 1,
+		width: 100,
+		height: 100,
+		backgroundColor: "lightblue",
+	},
+	button2: {
+		margin: 20,
+		padding: 10,
+		borderWidth: 1,
+		opacity: 0.5,
+		width: "100%",
+		height: 100,
+		backgroundColor: "orange",
+	},
+	innerButton: {
+		width: 20,
+		aspectRatio: 1 / 1,
+		backgroundColor: "grey",
 	},
 })

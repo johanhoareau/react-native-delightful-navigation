@@ -1,45 +1,49 @@
 import { StyleSheet, Text, View } from "react-native"
 import {
 	useDelightfulTransition,
+	XScreen,
 	XView,
 } from "react-native-delightful-navigation"
 
 export default function DetailsScreen() {
 	const { register } = useDelightfulTransition("/details")
 	return (
-		<View style={styles.container}>
-			<Text>Test Details</Text>
+		<XScreen {...register}>
+			<View style={styles.container}>
+				<Text>Test Details</Text>
 
-			<XView
-				{...register}
-				tag="button1"
-				style={styles.button}
-			/>
-
-			<XView
-				{...register}
-				tag="button2"
-				style={styles.button2}
-			>
 				<XView
 					{...register}
-					tag="inner-button"
-					style={styles.innerButton}
+					tag="button1"
+					style={styles.button}
 				/>
-			</XView>
 
-			{/* <XView
-				{...register}
-				tag="button3"
-				style={styles.button}
-			/> */}
-		</View>
+				<XView
+					{...register}
+					tag="button2"
+					style={styles.button2}
+				>
+					<XView
+						{...register}
+						tag="inner-button"
+						style={styles.innerButton}
+					/>
+				</XView>
+
+				<XView
+					{...register}
+					tag="button3"
+					style={styles.button3}
+				/>
+			</View>
+		</XScreen>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		gap: 10,
 	},
 	button: {
 		padding: 10,
@@ -48,13 +52,11 @@ const styles = StyleSheet.create({
 		height: 100,
 		borderRadius: 100,
 		backgroundColor: "lightblue",
-		justifyContent: "center",
-		alignItems: "flex-end",
 	},
 	button2: {
 		padding: 10,
 		borderRadius: 100,
-		opacity: 0.5,
+		opacity: 1,
 		justifyContent: "flex-end",
 		alignItems: "flex-end",
 		borderWidth: 1,
@@ -62,9 +64,19 @@ const styles = StyleSheet.create({
 		width: "100%",
 		height: 100,
 	},
+	button3: {
+		padding: 10,
+		borderWidth: 1,
+		width: 50,
+		height: 150,
+		borderRadius: 100,
+		backgroundColor: "lightblue",
+		alignSelf: "flex-end",
+	},
 	innerButton: {
 		width: 20,
 		aspectRatio: 1 / 1,
-		backgroundColor: "grey",
+		backgroundColor: "black",
+		alignSelf: "flex-end",
 	},
 })
