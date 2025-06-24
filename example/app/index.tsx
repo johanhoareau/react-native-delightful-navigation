@@ -7,10 +7,14 @@ import {
 } from "react-native-delightful-navigation"
 
 export default function App() {
-	const { register } = useDelightfulTransition("/")
+	const { register, navigationWithTransition } = useDelightfulTransition("/")
 
 	const handlePress = () => {
-		console.log(JSON.stringify(register.registerRef.current, null, 2))
+		navigationWithTransition({
+			destination: "/details",
+			navigationCallback: () => console.log("navigate"),
+		})
+		// console.log(JSON.stringify(register.registerRef.current, null, 2))
 	}
 
 	return (
