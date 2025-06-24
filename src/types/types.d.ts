@@ -1,3 +1,5 @@
+import type { Image, Text, View } from "react-native"
+
 export type TransitionStatus =
 	| "off"
 	| "before navigation"
@@ -11,6 +13,7 @@ export type Route = string
 export type TransitionTag = string
 export type XComponentType = "View" | "Text" | "Image"
 export type Style = StyleProp<ViewStyle | TextStyle | ImageStyle>
+export type ReactComponent = View | Text | Image
 
 export type MeasuredDimensionsComponent = {
 	x: number;
@@ -43,9 +46,9 @@ export type StoreRegisterXComponents = {
 	xComponentsData: XComponentData
 }
 
-export type NavigationWithTransitionArg = {
+export type NavigationCallback = () => void
+
+export type NavigateWithTransitionArg = {
 	destination: Route,
 	navigationCallback: NavigationCallback
 }
-
-export type NavigationCallback = () => void

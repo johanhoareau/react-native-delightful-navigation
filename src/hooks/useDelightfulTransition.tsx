@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react"
 import type {
+	NavigateWithTransitionArg,
 	NavigationCallback,
-	NavigationWithTransitionArg,
 	RegisterXComponents,
 	Route,
 } from "../types/types"
@@ -9,7 +9,8 @@ import { useTransitionStore } from "../_core/stores/useTransitionStore"
 
 export const useDelightfulTransition = (route: Route) => {
 	const navigationCallbackRef = useRef<NavigationCallback | null>(null)
-	const origin = useTransitionStore((state) => state.origin)
+	// const origin = useTransitionStore((state) => state.origin)
+	const destination = useTransitionStore((state) => state.destination)
 	const prepareBeforeNavigation = useTransitionStore(
 		(state) => state.prepareBeforeNavigation
 	)
@@ -24,7 +25,7 @@ export const useDelightfulTransition = (route: Route) => {
 			return isAllSaved
 		}
 	)
-	// console.log("ORIGIN --->> ", JSON.stringify(origin, null, 2))
+	console.log("DESTINATION --->> ", JSON.stringify(destination, null, 2))
 
 	const registerRef = useRef<RegisterXComponents>({
 		route,
@@ -41,13 +42,13 @@ export const useDelightfulTransition = (route: Route) => {
 		}
 	}, [allComponentsDataOriginAreSaved])
 
-	const navigationWithTransition = (arg: NavigationWithTransitionArg) => {
+	const navigateWithTransition = (arg: NavigateWithTransitionArg) => {
 		navigationCallbackRef.current = arg.navigationCallback
 		prepareBeforeNavigation(registerRef.current, arg.destination)
 	}
 
 	return {
 		register,
-		navigationWithTransition,
+		navigateWithTransition,
 	}
 }

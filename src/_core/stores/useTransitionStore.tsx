@@ -47,6 +47,23 @@ export const useTransitionStore = create(
 					})
 				)
 			},
+			addDestinationComponentData: (
+				componentData: AdditionnalXComponentData & { tag: TransitionTag }
+			) => {
+				set(
+					produce((state) => {
+						const isAlreadyAdd = state.destination.xComponentsData.find(
+							(el: XComponentData) => el.tag === componentData.tag
+						)
+						if (!isAlreadyAdd) {
+							state.destination.xComponentsData = [
+								...state.destination.xComponentsData,
+								componentData,
+							]
+						}
+					})
+				)
+			},
 		})
 	)
 )

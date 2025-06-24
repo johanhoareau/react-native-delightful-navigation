@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef } from "react"
 import type {
 	MeasuredDimensionsComponent,
 	ReactComponent,
@@ -16,8 +16,12 @@ export const useHandlerXComponent = (
 	type: XComponentType
 ) => {
 	const xComponentRef = useRef<ReactComponent | null>(null)
+
 	const transitionOriginRoute = useTransitionStore(
 		(state) => state.origin?.route
+	)
+	const transitionDestinationRoute = useTransitionStore(
+		(state) => state.destination?.route
 	)
 	const hasCorrespondenceIntoStoreOrigin = useTransitionStore(
 		(state) => !!state.origin?.xComponentsData.find((el) => el.tag === tag)
@@ -25,9 +29,9 @@ export const useHandlerXComponent = (
 	const addOriginComponentData = useTransitionStore(
 		(state) => state.addOriginComponentData
 	)
-	// const transitionDestination = useTransitionStore(
-	// 	(state) => state.destination?.route
-	// )
+	const addDestinationComponentData = useTransitionStore(
+		(state) => state.addDestinationComponentData
+	)
 
 	// Before navigation
 	useEffect(() => {
@@ -57,6 +61,41 @@ export const useHandlerXComponent = (
 		registerRef,
 		tag,
 		transitionOriginRoute,
+		type,
+	])
+
+	// During navigation
+	useLayoutEffect(() => {
+		const isFromDestinationRoute =
+			transitionDestinationRoute === registerRef.current.route
+
+		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute) {
+			const addDestinationComponentDataWithDelay = setTimeout(() => {
+				xComponentRef.current?.measureInWindow((x, y, width, height) => {
+					const measurement = {
+						height,
+						width,
+						x,
+						y,
+					}
+
+					addDestinationComponentData({
+						tag,
+						type,
+						style,
+						measure: measurement,
+					})
+				})
+				clearTimeout(addDestinationComponentDataWithDelay)
+			}, 100)
+		}
+	}, [
+		addDestinationComponentData,
+		hasCorrespondenceIntoStoreOrigin,
+		registerRef,
+		style,
+		tag,
+		transitionDestinationRoute,
 		type,
 	])
 
