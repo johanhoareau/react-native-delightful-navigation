@@ -3274,10 +3274,10 @@ __metadata:
   linkType: hard
 
 "@react-navigation/bottom-tabs@npm:^7.3.10":
-  version: 7.4.0
-  resolution: "@react-navigation/bottom-tabs@npm:7.4.0"
+  version: 7.4.2
+  resolution: "@react-navigation/bottom-tabs@npm:7.4.2"
   dependencies:
-    "@react-navigation/elements": ^2.5.0
+    "@react-navigation/elements": ^2.5.2
     color: ^4.2.3
   peerDependencies:
     "@react-navigation/native": ^7.1.14
@@ -3285,7 +3285,7 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: 6600780a3f40b0f3203314596c00f8392fff692ce749547b63d8aa64a714b929b6393d007728cc4e49ec92369366b36a3d8fb8b831b7094e870ce5fd42bed12b
+  checksum: 734a00bf442b0c10085ab08cb454bc838e3ec007a98f9f578ada069539b7eec9e1e98fa8d67c7b375007771fc20af4d49f1cc753f31c7acc5059639904569955
   languageName: node
   linkType: hard
 
@@ -3306,9 +3306,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-navigation/elements@npm:^2.5.0":
-  version: 2.5.0
-  resolution: "@react-navigation/elements@npm:2.5.0"
+"@react-navigation/elements@npm:^2.5.2":
+  version: 2.5.2
+  resolution: "@react-navigation/elements@npm:2.5.2"
   dependencies:
     color: ^4.2.3
     use-latest-callback: ^0.2.4
@@ -3322,15 +3322,15 @@ __metadata:
   peerDependenciesMeta:
     "@react-native-masked-view/masked-view":
       optional: true
-  checksum: 3e59d86ecdccc72c3720e6b9a2a58772e85824dbca5d10ede54a78850923b78908659397d4e8d4eadd85162a31e73388593bb6e574cc1d9cd5005b83ab507275
+  checksum: 0b0d92574ba845b8d1ee3c4fe78a22b8aa8a3e69e27678d0daa45aae08d31488eee05128ede6b5a725bbdc4d4a3ef4990f85760a30b3d01ddb47a86d41be5593
   languageName: node
   linkType: hard
 
 "@react-navigation/native-stack@npm:^7.3.10":
-  version: 7.3.19
-  resolution: "@react-navigation/native-stack@npm:7.3.19"
+  version: 7.3.21
+  resolution: "@react-navigation/native-stack@npm:7.3.21"
   dependencies:
-    "@react-navigation/elements": ^2.5.0
+    "@react-navigation/elements": ^2.5.2
     warn-once: ^0.1.1
   peerDependencies:
     "@react-navigation/native": ^7.1.14
@@ -3338,7 +3338,7 @@ __metadata:
     react-native: "*"
     react-native-safe-area-context: ">= 4.0.0"
     react-native-screens: ">= 4.0.0"
-  checksum: f6860a7f03625c485212188bae660375860d1223fca7dc6f80a8b7513b97bd6b2ab430675a2018bb29889aa67ae4119be9ce9272f4a81792cfbdf2db36d31c69
+  checksum: 9b644951a0c230e812fdb314bec3841c2ca1db4a7898b5b55f3c3663d8956d8dc168a1d0151b1094216f009ccd562534ba2ae89c135a368dca8cb5ee719ea9ce
   languageName: node
   linkType: hard
 
@@ -5847,9 +5847,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.160":
-  version: 1.5.171
-  resolution: "electron-to-chromium@npm:1.5.171"
-  checksum: 2fd04844c0a28295723246b915a41056c19fae53a779a8f138338e13bb42f24aeae55d724c38269ea5b4edc357ad7d043dee3a7897e52a9c75762b6bb679cc56
+  version: 1.5.173
+  resolution: "electron-to-chromium@npm:1.5.173"
+  checksum: aaa9ec74a08748219b0cd6e912d2f00a6a359f5fffa91db79b82486e27bb3a279245db2911e9cf122142f0c2badeb86cad8c86277e6125991489bd30747373b5
   languageName: node
   linkType: hard
 
@@ -6974,9 +6974,9 @@ __metadata:
   linkType: hard
 
 "flow-parser@npm:0.*":
-  version: 0.273.1
-  resolution: "flow-parser@npm:0.273.1"
-  checksum: 0f83ed38fffe1e337aa4373702f3c28207065ddcac4252c590e923617a2847669c102e88d5c055a924ed12f68f3e131f2999a3871b610b91b29e7cea29a134ae
+  version: 0.274.0
+  resolution: "flow-parser@npm:0.274.0"
+  checksum: 901254f207ec530444a26b4e1064095746e9c886a3e63ef75fb037300bc028bbc8ea6abc60db4de29fda5f78c3f663143154e97ae349ed00bbbfbfbae812a146
   languageName: node
   linkType: hard
 
@@ -7682,6 +7682,13 @@ __metadata:
   bin:
     image-size: bin/image-size.js
   checksum: 8601ddd4edc1db16f097f5cf585c23214e29c3b8f4d8a8f8d59b8e3bae2338c8a5073236bfff421d8541091a98a38b802ed049203c745286a69d1aac4e5bc4c7
+  languageName: node
+  linkType: hard
+
+"immer@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "immer@npm:10.1.1"
+  checksum: 07c67970b7d22aded73607193d84861bf786f07d47f7d7c98bb10016c7a88f6654ad78ae1e220b3c623695b133aabbf24f5eb8d9e8060cff11e89ccd81c9c10b
   languageName: node
   linkType: hard
 
@@ -11047,11 +11054,11 @@ __metadata:
   linkType: hard
 
 "prettier@npm:^3.0.3":
-  version: 3.5.3
-  resolution: "prettier@npm:3.5.3"
+  version: 3.6.0
+  resolution: "prettier@npm:3.6.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 61e97bb8e71a95d8f9c71f1fd5229c9aaa9d1e184dedb12399f76aa802fb6fdc8954ecac9df25a7f82ee7311cf8ddbd06baf5507388fc98e5b44036cc6a88a1b
+  checksum: 4ff40e82092565b05165c527b5ba3e9f6de6b785c81297e79665e881d9409a922ddf43b222440a90678a840133b498ed3e9af5c7c2106119c9552bda0f79dfeb
   languageName: node
   linkType: hard
 
@@ -11419,6 +11426,7 @@ __metadata:
     eslint: ^9.22.0
     eslint-config-prettier: ^10.1.1
     eslint-plugin-prettier: ^5.2.3
+    immer: ^10.1.1
     jest: ^29.7.0
     prettier: ^3.0.3
     react-native: 0.79.2
