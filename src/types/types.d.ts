@@ -6,3 +6,46 @@ export type TransitionStatus =
 	| "start transition"
 	| "end transition"
 	| "cleaning"
+
+export type Route = string
+export type TransitionTag = string
+export type XComponentType = "View" | "Text" | "Image"
+export type Style = StyleProp<ViewStyle | TextStyle | ImageStyle>
+
+export type MeasuredDimensionsComponent = {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
+export type InitialXComponentData = {
+	tag: TransitionTag,
+	parents: TransitionTag[],
+}
+
+export type AdditionnalXComponentData = {
+	type: XComponentType,
+	measure: MeasuredDimensionsComponent,
+	style: Style
+}
+
+export type XComponentData = InitialXComponentData & AdditionnalXComponentData
+export type InProgressXComponentData = InitialXComponentData & Partial<AdditionnalXComponentData>
+
+export type RegisterXComponents = {
+	route: Route
+	xComponentsData: InProgressXComponentData[]
+}
+
+export type StoreRegisterXComponents = {
+	route: Route,
+	xComponentsData: XComponentData
+}
+
+export type NavigationWithTransitionArg = {
+	destination: Route,
+	navigationCallback: NavigationCallback
+}
+
+export type NavigationCallback = () => void
