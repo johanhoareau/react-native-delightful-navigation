@@ -28,7 +28,7 @@ export type InitialXComponentData = {
 }
 
 export type AdditionnalXComponentData = {
-	type: XComponentType,
+	type?: XComponentType,
 	measure: MeasuredDimensionsComponent,
 	style: Style
 }

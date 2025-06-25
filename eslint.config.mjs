@@ -24,7 +24,7 @@ export default defineConfig([
 		},
 		rules: {
 			"react/react-in-jsx-scope": "off",
-			"indent": ["error", "tab"],
+			"indent": ["error", "tab", { SwitchCase: "1" }],
 			"no-tabs": "off",
 			"prettier/prettier": [
 				"error",

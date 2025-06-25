@@ -9,6 +9,9 @@ import type {
 } from "../../types/types"
 import { useTransitionStore } from "../stores/useTransitionStore"
 
+//FIXME: Approximate value
+const DURATION_NATIVE_TRANSITION = 300
+
 export const useHandlerXComponent = (
 	registerRef: React.RefObject<RegisterXComponents>,
 	tag: TransitionTag,
@@ -39,18 +42,18 @@ export const useHandlerXComponent = (
 			transitionOriginRoute === registerRef.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromOriginRoute) {
-			xComponentRef.current?.measureInWindow((x, y, width, height) => {
+			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
 				const measurement = {
 					height,
 					width,
-					x,
-					y,
+					x: pageX,
+					y: pageY,
 				}
 
 				addOriginComponentData({
 					tag,
 					type,
-					style: "test",
+					style,
 					measure: measurement,
 				})
 			})
@@ -65,18 +68,18 @@ export const useHandlerXComponent = (
 	])
 
 	// During navigation
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const isFromDestinationRoute =
 			transitionDestinationRoute === registerRef.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute) {
 			const addDestinationComponentDataWithDelay = setTimeout(() => {
-				xComponentRef.current?.measureInWindow((x, y, width, height) => {
+				xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
 					const measurement = {
 						height,
 						width,
-						x,
-						y,
+						x: pageX,
+						y: pageY,
 					}
 
 					addDestinationComponentData({
@@ -87,7 +90,7 @@ export const useHandlerXComponent = (
 					})
 				})
 				clearTimeout(addDestinationComponentDataWithDelay)
-			}, 100)
+			}, DURATION_NATIVE_TRANSITION)
 		}
 	}, [
 		addDestinationComponentData,

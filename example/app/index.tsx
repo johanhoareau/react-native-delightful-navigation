@@ -1,4 +1,4 @@
-import { Button, StyleSheet, View } from "react-native"
+import { Button, StyleSheet, Text, View } from "react-native"
 import {
 	useDelightfulTransition,
 	XScreen,
@@ -9,6 +9,7 @@ import { useRouter } from "expo-router"
 export default function App() {
 	const router = useRouter()
 	const { register, navigateWithTransition } = useDelightfulTransition("/")
+
 
 	const handleNavigation = () => {
 		navigateWithTransition({

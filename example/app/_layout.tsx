@@ -1,5 +1,10 @@
 import { Stack } from "expo-router"
+import { FlowManager } from "react-native-delightful-navigation"
 
 export default function RootLayout() {
-	return <Stack />
+	return (
+		<FlowManager>
+			<Stack />
+		</FlowManager>
+	)
 }

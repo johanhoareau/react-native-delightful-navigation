@@ -2,7 +2,7 @@
   "compilerOptions": {
     "rootDir": ".",
     "paths": {
-      "react-native-delightful-navigation": ["./src/index"]
+      "react-native-delightful-navigation": ["./src/index"],
     },
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
