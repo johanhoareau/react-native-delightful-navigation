@@ -1,4 +1,4 @@
-import type { Image, Text, View } from "react-native"
+import type { Image, ImageStyle, Text, TextStyle, View, ViewStyle } from "react-native"
 
 export type TransitionStatus =
 	| "off"
@@ -12,7 +12,7 @@ export type TransitionStatus =
 export type Route = string
 export type TransitionTag = string
 export type XComponentType = "View" | "Text" | "Image"
-export type Style = StyleProp<ViewStyle | TextStyle | ImageStyle>
+export type Style = ViewStyle | TextStyle | ImageStyle
 export type ReactComponent = View | Text | Image
 export type RegisterRef = React.RefObject<RegisterXComponents>
 export type TransitionFinished = {
@@ -39,6 +39,7 @@ export type AdditionnalXComponentData = {
 
 export type XComponentData = InitialXComponentData & AdditionnalXComponentData
 export type InProgressXComponentData = InitialXComponentData & Partial<AdditionnalXComponentData>
+export type DestinationData = InProgressXComponentData & TransitionFinished
 
 export type RegisterXComponents = {
 	route: Route
@@ -47,7 +48,7 @@ export type RegisterXComponents = {
 
 export type DestinationRegisterXComponents = {
 	route: Route
-	xComponentsData: (InProgressXComponentData & TransitionFinished)[]
+	xComponentsData: DestinationData[]
 }
 
 export type StoreRegisterXComponents = {
