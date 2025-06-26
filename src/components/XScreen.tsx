@@ -2,12 +2,13 @@ import React, { useEffect, type PropsWithChildren } from "react"
 import { StyleSheet } from "react-native"
 import type {
 	InProgressXComponentData,
+	RegisterRef,
 	RegisterXComponents,
 } from "../types/types"
 import { parseTree } from "../_core/utils/parseTree"
 
 type XScreenProps = {
-	registerRef: React.RefObject<RegisterXComponents>
+	registerRef: RegisterRef
 } & PropsWithChildren
 
 export const XScreen = ({ registerRef, children }: XScreenProps) => {

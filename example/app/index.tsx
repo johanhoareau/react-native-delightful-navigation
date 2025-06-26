@@ -40,11 +40,11 @@ export default function App() {
 						style={styles.innerButton}
 					/>
 				</XView>
-				{/* <XView
+				<XView
 					{...register}
 					tag="button3"
 					style={styles.button}
-				/> */}
+				/>
 				<Button
 					title="Go to Details"
 					onPress={handleNavigation}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 	button: {
 		margin: 20,
 		padding: 10,
-		borderWidth: 1,
+		borderWidth: 3,
 		width: 100,
 		height: 100,
 		backgroundColor: "lightblue",
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
 		margin: 20,
 		padding: 10,
 		borderWidth: 1,
-		opacity: 0.5,
+		opacity: 0.1,
 		width: "100%",
 		height: 100,
 		backgroundColor: "orange",

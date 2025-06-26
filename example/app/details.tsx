@@ -1,3 +1,5 @@
+import { useNavigation } from "expo-router";
+import { useEffect } from "react"
 import { StyleSheet, Text, View } from "react-native"
 import {
 	useDelightfulTransition,
@@ -6,7 +8,20 @@ import {
 } from "react-native-delightful-navigation"
 
 export default function DetailsScreen() {
-	const { register } = useDelightfulTransition("/details")
+	const { register, setNativeTransitionEnd } = useDelightfulTransition("/details")
+	const navigation: any = useNavigation(); // bypass des types
+
+	useEffect(() => {
+		const unsub = navigation.addListener('transitionEnd', (e: any) => {
+			if (!e.data.closing) {
+				console.log('✅ Transition d’entrée terminée');
+				setNativeTransitionEnd(true)
+			}
+		});
+		return unsub;
+	}, [navigation]);
+
+
 	return (
 		<XScreen {...register}>
 			<View style={styles.container}>
@@ -66,10 +81,10 @@ const styles = StyleSheet.create({
 	},
 	button3: {
 		padding: 10,
-		borderWidth: 1,
+		borderWidth: 3,
 		width: 50,
 		height: 150,
-		borderRadius: 100,
+		// borderRadius: 30,
 		backgroundColor: "lightblue",
 		alignSelf: "flex-end",
 	},

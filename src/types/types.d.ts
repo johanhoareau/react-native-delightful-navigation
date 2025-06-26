@@ -14,6 +14,10 @@ export type TransitionTag = string
 export type XComponentType = "View" | "Text" | "Image"
 export type Style = StyleProp<ViewStyle | TextStyle | ImageStyle>
 export type ReactComponent = View | Text | Image
+export type RegisterRef = React.RefObject<RegisterXComponents>
+export type TransitionFinished = {
+	isTransitionFinished: boolean
+}
 
 export type MeasuredDimensionsComponent = {
 	x: number;
@@ -39,6 +43,11 @@ export type InProgressXComponentData = InitialXComponentData & Partial<Additionn
 export type RegisterXComponents = {
 	route: Route
 	xComponentsData: InProgressXComponentData[]
+}
+
+export type DestinationRegisterXComponents = {
+	route: Route
+	xComponentsData: (InProgressXComponentData & TransitionFinished)[]
 }
 
 export type StoreRegisterXComponents = {

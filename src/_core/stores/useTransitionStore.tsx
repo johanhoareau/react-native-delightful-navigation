@@ -2,21 +2,26 @@ import { create } from "zustand"
 import { combine } from "zustand/middleware"
 import type {
 	AdditionnalXComponentData,
+	DestinationRegisterXComponents,
 	RegisterXComponents,
 	Route,
+	TransitionFinished,
 	TransitionStatus,
 	TransitionTag,
 	XComponentData,
 } from "../../types/types"
 import { produce } from "immer"
 
+const initialState =
+{
+	status: "off" as TransitionStatus,
+	origin: null as RegisterXComponents | null,
+	destination: null as DestinationRegisterXComponents | null,
+}
+
 export const useTransitionStore = create(
 	combine(
-		{
-			status: "off" as TransitionStatus,
-			origin: null as RegisterXComponents | null,
-			destination: null as RegisterXComponents | null,
-		},
+		{ ...initialState },
 		(set) => ({
 			setStatus: (newStatus: TransitionStatus) => {
 				set({ status: newStatus })
@@ -48,7 +53,7 @@ export const useTransitionStore = create(
 				)
 			},
 			addDestinationComponentData: (
-				componentData: AdditionnalXComponentData & { tag: TransitionTag }
+				componentData: AdditionnalXComponentData & { tag: TransitionTag } & TransitionFinished
 			) => {
 				set(
 					produce((state) => {
@@ -64,6 +69,19 @@ export const useTransitionStore = create(
 					})
 				)
 			},
+			setTransitionComponentIsFinished: (tag: TransitionTag) => {
+				set(
+					produce(state => {
+						const indexDestinationComponent = state.destination.xComponentsData.findIndex(
+							(el: XComponentData & TransitionFinished) => el.tag === tag
+						)
+						state.destination.xComponentsData[indexDestinationComponent].isTransitionFinished = true
+					})
+				)
+			},
+			resetState: () => {
+				set(initialState)
+			}
 		})
 	)
 )

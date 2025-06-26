@@ -1,25 +1,25 @@
-import { useEffect, useLayoutEffect, useRef } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import type {
-	MeasuredDimensionsComponent,
 	ReactComponent,
-	RegisterXComponents,
+	RegisterRef,
 	Style,
 	TransitionTag,
 	XComponentType,
 } from "../../types/types"
 import { useTransitionStore } from "../stores/useTransitionStore"
-
-//FIXME: Approximate value
-const DURATION_NATIVE_TRANSITION = 300
+import type { LayoutChangeEvent } from "react-native"
 
 export const useHandlerXComponent = (
-	registerRef: React.RefObject<RegisterXComponents>,
+	registerRef: RegisterRef,
 	tag: TransitionTag,
 	style: Style,
-	type: XComponentType
+	nativeTransitionEnd: boolean,
+	type: XComponentType,
 ) => {
+	const [opacityDuringTransition, setOpacityDuringTransition] = useState({})
 	const xComponentRef = useRef<ReactComponent | null>(null)
 
+	const statusTransition = useTransitionStore(state => state.status)
 	const transitionOriginRoute = useTransitionStore(
 		(state) => state.origin?.route
 	)
@@ -35,6 +35,23 @@ export const useHandlerXComponent = (
 	const addDestinationComponentData = useTransitionStore(
 		(state) => state.addDestinationComponentData
 	)
+
+	// if (tag === "button2" && registerRef.current.route === "/") {
+	// 	const dataLog = {
+	// 		tag,
+	// 		route: registerRef.current.route,
+	// 		statusTransition
+	// 	}
+	// 	console.log("RENDER", JSON.stringify(dataLog, null, 2))
+	// }
+
+	useEffect(() => {
+		if (statusTransition === "start transition") {
+			setOpacityDuringTransition({ opacity: 0 })
+		} else {
+			setOpacityDuringTransition({})
+		}
+	}, [statusTransition])
 
 	// Before navigation
 	useEffect(() => {
@@ -68,29 +85,27 @@ export const useHandlerXComponent = (
 	])
 
 	// During navigation
-	useEffect(() => {
+	useLayoutEffect(() => {
 		const isFromDestinationRoute =
 			transitionDestinationRoute === registerRef.current.route
 
-		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute) {
-			const addDestinationComponentDataWithDelay = setTimeout(() => {
-				xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
-					const measurement = {
-						height,
-						width,
-						x: pageX,
-						y: pageY,
-					}
+		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && nativeTransitionEnd) {
+			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
+				const measurement = {
+					height,
+					width,
+					x: pageX,
+					y: pageY,
+				}
 
-					addDestinationComponentData({
-						tag,
-						type,
-						style,
-						measure: measurement,
-					})
+				addDestinationComponentData({
+					tag,
+					type,
+					style,
+					measure: measurement,
+					isTransitionFinished: false
 				})
-				clearTimeout(addDestinationComponentDataWithDelay)
-			}, DURATION_NATIVE_TRANSITION)
+			})
 		}
 	}, [
 		addDestinationComponentData,
@@ -100,9 +115,11 @@ export const useHandlerXComponent = (
 		tag,
 		transitionDestinationRoute,
 		type,
+		nativeTransitionEnd
 	])
 
 	return {
 		xComponentRef,
+		opacityDuringTransition,
 	}
 }

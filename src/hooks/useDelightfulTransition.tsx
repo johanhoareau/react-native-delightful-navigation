@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import type {
 	NavigateWithTransitionArg,
 	NavigationCallback,
@@ -8,7 +8,9 @@ import type {
 import { useTransitionStore } from "../_core/stores/useTransitionStore"
 import { checkIfAllComponentsDataOriginAreSaved } from "../_core/utils/checkIfAllComponentsDataOriginAreSaved"
 
+
 export const useDelightfulTransition = (route: Route) => {
+	const [nativeTransitionEnd, setNativeTransitionEnd] = useState(false)
 	const navigationCallbackRef = useRef<NavigationCallback | null>(null)
 	const prepareBeforeNavigation = useTransitionStore(
 		(state) => state.prepareBeforeNavigation
@@ -29,6 +31,7 @@ export const useDelightfulTransition = (route: Route) => {
 
 	const register = {
 		registerRef,
+		nativeTransitionEnd
 	}
 
 	useEffect(() => {
@@ -36,6 +39,7 @@ export const useDelightfulTransition = (route: Route) => {
 			navigationCallbackRef.current?.()
 		}
 	}, [allComponentsDataOriginAreSaved])
+
 
 	const navigateWithTransition = (arg: NavigateWithTransitionArg) => {
 		navigationCallbackRef.current = arg.navigationCallback
@@ -45,5 +49,6 @@ export const useDelightfulTransition = (route: Route) => {
 	return {
 		register,
 		navigateWithTransition,
+		setNativeTransitionEnd
 	}
 }

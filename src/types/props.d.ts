@@ -1,9 +1,10 @@
 import type { PropsWithChildren } from "react"
-import type { RegisterXComponents, TransitionTag } from "./types"
+import type { RegisterRef, RegisterXComponents, TransitionTag } from "./types"
 
 export type FlowManagerProps = {} & PropsWithChildren
 
 export type XComponentProps = {
-	registerRef: React.RefObject<RegisterXComponents>
+	registerRef: RegisterRef
+	nativeTransitionEnd: boolean
 	tag: TransitionTag
 }
