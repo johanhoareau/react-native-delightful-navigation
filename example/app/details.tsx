@@ -84,9 +84,11 @@ const styles = StyleSheet.create({
 		borderWidth: 3,
 		width: 50,
 		height: 150,
-		// borderRadius: 30,
+		margin: 20,
+		borderRadius: 30,
 		backgroundColor: "lightblue",
 		alignSelf: "flex-end",
+
 	},
 	innerButton: {
 		width: 20,
