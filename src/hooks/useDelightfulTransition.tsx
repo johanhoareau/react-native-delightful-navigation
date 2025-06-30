@@ -10,7 +10,6 @@ import { checkIfAllComponentsDataOriginAreSaved } from "../_core/utils/checkIfAl
 
 
 export const useDelightfulTransition = (route: Route) => {
-	const [nativeTransitionEnd, setNativeTransitionEnd] = useState(false)
 	const navigationCallbackRef = useRef<NavigationCallback | null>(null)
 	const prepareBeforeNavigation = useTransitionStore(
 		(state) => state.prepareBeforeNavigation
@@ -23,6 +22,8 @@ export const useDelightfulTransition = (route: Route) => {
 			return isAllSaved
 		}
 	)
+	console.log(route, allComponentsDataOriginAreSaved);
+
 
 	const registerRef = useRef<RegisterXComponents>({
 		route,
@@ -31,7 +32,6 @@ export const useDelightfulTransition = (route: Route) => {
 
 	const register = {
 		registerRef,
-		nativeTransitionEnd
 	}
 
 	useEffect(() => {
@@ -49,6 +49,5 @@ export const useDelightfulTransition = (route: Route) => {
 	return {
 		register,
 		navigateWithTransition,
-		setNativeTransitionEnd
 	}
 }

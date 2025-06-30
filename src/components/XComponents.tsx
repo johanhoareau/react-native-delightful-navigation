@@ -4,14 +4,14 @@ import type { XComponentProps } from "../types/props"
 
 type XViewProps = XComponentProps & ViewProps
 
-export const XView = ({ registerRef, nativeTransitionEnd, tag, style, ...restProps }: XViewProps) => {
+export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => {
 	const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
 		registerRef,
 		tag,
 		style,
-		nativeTransitionEnd,
 		"View"
 	)
+
 
 
 	return (

@@ -5,6 +5,5 @@ export type FlowManagerProps = {} & PropsWithChildren
 
 export type XComponentProps = {
 	registerRef: RegisterRef
-	nativeTransitionEnd: boolean
 	tag: TransitionTag
 }

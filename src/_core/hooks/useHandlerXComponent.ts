@@ -7,15 +7,16 @@ import type {
 	XComponentType,
 } from "../../types/types"
 import { useTransitionStore } from "../stores/useTransitionStore"
-import type { LayoutChangeEvent } from "react-native"
+
 
 export const useHandlerXComponent = (
 	registerRef: RegisterRef,
 	tag: TransitionTag,
 	style: Style,
-	nativeTransitionEnd: boolean,
 	type: XComponentType,
 ) => {
+
+
 	const [opacityDuringTransition, setOpacityDuringTransition] = useState({})
 	const xComponentRef = useRef<ReactComponent | null>(null)
 
@@ -89,7 +90,7 @@ export const useHandlerXComponent = (
 		const isFromDestinationRoute =
 			transitionDestinationRoute === registerRef.current.route
 
-		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && nativeTransitionEnd) {
+		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute) {
 			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
 				const measurement = {
 					height,
@@ -115,7 +116,6 @@ export const useHandlerXComponent = (
 		tag,
 		transitionDestinationRoute,
 		type,
-		nativeTransitionEnd
 	])
 
 	return {
