@@ -48,7 +48,7 @@ export const TemporaryTransitionComponents = () => {
 
 	useEffect(() => {
 		if (allComponentsDataOriginAreSaved) {
-			setStatusTransition("start transition")
+			setStatusTransition("navigation")
 		}
 
 	}, [allComponentsDataOriginAreSaved])

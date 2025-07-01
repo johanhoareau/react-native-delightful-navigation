@@ -47,7 +47,7 @@ export const useHandlerXComponent = (
 	// }
 
 	useEffect(() => {
-		if (statusTransition === "start transition") {
+		if (statusTransition === "navigation" || statusTransition === "start transition") {
 			setOpacityDuringTransition({ opacity: 0 })
 		} else {
 			setOpacityDuringTransition({})
@@ -86,11 +86,12 @@ export const useHandlerXComponent = (
 	])
 
 	// During navigation
-	useLayoutEffect(() => {
+	useEffect(() => {
 		const isFromDestinationRoute =
 			transitionDestinationRoute === registerRef.current.route
 
-		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute) {
+		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && statusTransition === "start transition") {
+			console.log("statusTransition", statusTransition);
 			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
 				const measurement = {
 					height,
@@ -116,6 +117,7 @@ export const useHandlerXComponent = (
 		tag,
 		transitionDestinationRoute,
 		type,
+		statusTransition
 	])
 
 	return {

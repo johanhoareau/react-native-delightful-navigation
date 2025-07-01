@@ -14,15 +14,7 @@ export const useDelightfulTransition = (route: Route) => {
 	const prepareBeforeNavigation = useTransitionStore(
 		(state) => state.prepareBeforeNavigation
 	)
-	const allComponentsDataOriginAreSaved: boolean = useTransitionStore(
-		(state) => {
-			const isAllSaved = checkIfAllComponentsDataOriginAreSaved(
-				state.origin?.xComponentsData
-			)
-			return isAllSaved
-		}
-	)
-	console.log(route, allComponentsDataOriginAreSaved);
+	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
 
 
 	const registerRef = useRef<RegisterXComponents>({
@@ -35,10 +27,10 @@ export const useDelightfulTransition = (route: Route) => {
 	}
 
 	useEffect(() => {
-		if (allComponentsDataOriginAreSaved) {
+		if (isStatusOnNavigation) {
 			navigationCallbackRef.current?.()
 		}
-	}, [allComponentsDataOriginAreSaved])
+	}, [isStatusOnNavigation])
 
 
 	const navigateWithTransition = (arg: NavigateWithTransitionArg) => {
