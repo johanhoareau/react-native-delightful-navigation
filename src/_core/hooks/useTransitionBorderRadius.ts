@@ -1,4 +1,4 @@
-import { interpolate, useAnimatedStyle, useSharedValue, type SharedValue } from "react-native-reanimated"
+import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, type SharedValue } from "react-native-reanimated"
 import type { DestinationXData, Style } from "../../types/types"
 import { StyleSheet, type ViewStyle } from "react-native"
 
@@ -14,19 +14,21 @@ export const useTransitionBorderRadius = (
 	const borderRadius = useSharedValue(originFlatStyle.borderRadius ? originFlatStyle.borderRadius : 0)
 
 	const animatedBorderRadius = useAnimatedStyle(() => {
-		if (typeof originFlatStyle.borderRadius !== "number" || typeof destinationFlatStyle.borderRadius !== "number") return {}
 
-		const borderRadiusStart = originFlatStyle?.borderRadius ? originFlatStyle.borderRadius : 0
+		const borderRadiusStart = originFlatStyle?.borderRadius
+			? originFlatStyle.borderRadius as number
+			: 0
 
-		let borderRadiusEnd = destinationFlatStyle?.borderRadius
-			? destinationFlatStyle?.borderRadius
+		const borderRadiusEnd = destinationFlatStyle?.borderRadius
+			? destinationFlatStyle?.borderRadius as number
 			: 0
 
 
 		borderRadius.value = interpolate(
 			progress.value,
 			[0, 1],
-			[borderRadiusStart, borderRadiusEnd]
+			[borderRadiusStart, borderRadiusEnd],
+			Extrapolation.CLAMP
 		)
 		return {
 			borderRadius: borderRadius.value,

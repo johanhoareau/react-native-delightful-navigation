@@ -41,9 +41,6 @@ export const DisplayerTemporaryComponents = () => {
 	const resetTransitionStore = useTransitionStore(state => state.resetState)
 	const allTransitionIsFinished = useTransitionStore(state => {
 		const arrayOfIsTransitionIsFinished = state.destination?.xComponentsData.map(el => el.isTransitionFinished)
-		const array = state.destination?.xComponentsData.map(el => [el.isTransitionFinished, el.tag, el.type])
-		console.log(array);
-
 		const hasOneLeastNotFinished = arrayOfIsTransitionIsFinished?.includes(false)
 		let isAllFinished = hasOneLeastNotFinished !== undefined ? !hasOneLeastNotFinished : false
 		if (arrayOfIsTransitionIsFinished?.length === 0) {
