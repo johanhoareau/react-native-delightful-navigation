@@ -24,7 +24,7 @@ export const XScreen = ({ registerRef, children }: XScreenProps) => {
 	const landmarkRef = useRef<View | null>(null)
 
 	const [isReadyToMeasureDestinationComponents, setIsReadyToMeasureDestinationComponents] = useState({
-		firsHeaderHightSaved: null,
+		firsHeaderHeightSaved: null,
 		isReady: false
 	})
 
@@ -54,13 +54,13 @@ export const XScreen = ({ registerRef, children }: XScreenProps) => {
 				intervalCheckLayout = setInterval(() => {
 					landmarkRef.current?.measure((_, __, ___, ____, _____, pageY) => {
 						setIsReadyToMeasureDestinationComponents((prevState) => {
-							if (!prevState.firsHeaderHightSaved) {
+							if (!prevState.firsHeaderHeightSaved) {
 								return {
-									firsHeaderHightSaved: headerHeight,
+									firsHeaderHeightSaved: headerHeight,
 									isReady: false
 								}
 							}
-							if (pageY >= prevState.firsHeaderHightSaved) {
+							if (pageY >= prevState.firsHeaderHeightSaved) {
 								return {
 									...prevState,
 									isReady: true

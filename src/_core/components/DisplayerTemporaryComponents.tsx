@@ -3,10 +3,10 @@ import React, { useEffect } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { checkIfAllComponentsDataOriginAreSaved } from '../utils/checkIfAllComponentsDataOriginAreSaved'
 import type { XData } from '../../types/types'
-import { TemporaryText, TemporaryView } from './TemporaryTransitionComponents'
+import { TemporaryImage, TemporaryText, TemporaryView } from './TemporaryTransitionComponents'
 
 
-type ItemProps = XData & { text?: string }
+type ItemProps = XData
 
 export const Item = ({ type, ...props }: ItemProps) => {
 
@@ -18,6 +18,10 @@ export const Item = ({ type, ...props }: ItemProps) => {
 		case "Text":
 			return (
 				<TemporaryText {...props} />
+			)
+		case "Image":
+			return (
+				<TemporaryImage {...props} />
 			)
 		default:
 			return null
@@ -84,6 +88,7 @@ export const DisplayerTemporaryComponents = () => {
 						measure={el.measure}
 						style={el.style}
 						text={el.type === "Text" ? el?.text : ""}
+						source={el.source}
 					/>
 				))
 			) : null}

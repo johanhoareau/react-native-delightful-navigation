@@ -7,6 +7,7 @@ import type {
 	XComponentType,
 } from "../../types/types"
 import { useTransitionStore } from "../stores/useTransitionStore"
+import type { ImageSourcePropType } from "react-native"
 
 
 export const useHandlerXComponent = (
@@ -14,7 +15,8 @@ export const useHandlerXComponent = (
 	tag: TransitionTag,
 	style: Style,
 	type: XComponentType,
-	text?: string
+	text?: string,
+	source?: ImageSourcePropType | undefined
 ) => {
 
 
@@ -84,6 +86,17 @@ export const useHandlerXComponent = (
 							type,
 							style,
 							text,
+							measure: measurement,
+						})
+					}
+				} else if (type === "Image") {
+
+					if (source) {
+						addOriginComponentData({
+							tag,
+							type,
+							style,
+							source,
 							measure: measurement,
 						})
 					}

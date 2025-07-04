@@ -1,8 +1,10 @@
-import { Text, View, type ViewProps } from "react-native"
+import { Image, Text, View, type ImageProps, type TextProps, type ViewProps } from "react-native"
 import { useHandlerXComponent } from "../_core/hooks/useHandlerXComponent"
 import type { XComponentProps } from "../types/props"
 
 type XViewProps = XComponentProps & ViewProps
+type XTextProps = XComponentProps & TextProps
+type XImageProps = XComponentProps & ImageProps
 
 export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => {
 	const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
@@ -26,7 +28,7 @@ export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => 
 	)
 }
 
-export const XText = ({ registerRef, tag, style, ...restProps }: XViewProps) => {
+export const XText = ({ registerRef, tag, style, ...restProps }: XTextProps) => {
 	const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
 		registerRef,
 		tag,
@@ -47,5 +49,27 @@ export const XText = ({ registerRef, tag, style, ...restProps }: XViewProps) => 
 			{...restProps}
 		/>
 
+	)
+}
+
+export const XImage = ({ registerRef, tag, style, ...restProps }: XImageProps) => {
+	const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
+		registerRef,
+		tag,
+		style,
+		"Image",
+		"",
+		restProps.source
+	)
+
+	return (
+		<Image
+			ref={xComponentRef}
+			style={[
+				style,
+				opacityDuringTransition
+			]}
+			{...restProps}
+		/>
 	)
 }

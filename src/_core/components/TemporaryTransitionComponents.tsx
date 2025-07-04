@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, type ViewProps } from 'react-native'
-import type { XData, XTextData, XViewData } from '../../types/types'
+import type { XData, XImageData, XTextData, XViewData } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { useTransitionProgress } from '../hooks/useTransitionProgress'
 import Animated from 'react-native-reanimated'
@@ -9,6 +9,7 @@ import { useTransitionFont } from '../hooks/useTransitionFont'
 
 type TemporaryViewProps = Omit<Required<XViewData>, "type">
 type TemporaryTextProps = Omit<XTextData, "type">
+type TemporaryImageProps = Omit<XImageData, "type">
 
 
 
@@ -59,5 +60,33 @@ export const TemporaryText = ({ style, measure, tag, text }: TemporaryTextProps)
 		>
 			{text ? text : ""}
 		</Animated.Text>
+	)
+}
+
+
+export const TemporaryImage = ({ style, measure, tag, source }: TemporaryImageProps) => {
+	const destinationData = useTransitionStore(
+		(state) => state.destination?.xComponentsData.find((el) => el.tag === tag)
+	)
+	const { handlerTransitionLayout, animatedLayoutTransition } = useTransitionLayout(
+		style,
+		measure,
+		destinationData
+	)
+	const { progress } = useTransitionProgress(tag, destinationData)
+	const { animatedBorderRadius } = useTransitionBorderRadius(progress, style, destinationData)
+
+
+	console.log("source", source);
+
+	return (
+		<Animated.Image
+			layout={handlerTransitionLayout}
+			style={[
+				animatedLayoutTransition,
+				animatedBorderRadius,
+			]}
+			source={source}
+		/>
 	)
 }

@@ -1,4 +1,4 @@
-import type { Image, ImageStyle, Text, TextStyle, View, ViewStyle } from "react-native"
+import type { Image, ImageSourcePropType, ImageStyle, Text, TextStyle, View, ViewStyle } from "react-native"
 
 export type TransitionStatus =
 	| "off"
@@ -11,7 +11,7 @@ export type TransitionStatus =
 
 export type Route = string
 export type TransitionTag = string
-export type XComponentType = "View" | "Text"
+export type XComponentType = "View" | "Text" | "Image"
 export type Style = StyleProp<ViewStyle | TextStyle | ImageStyle>
 export type ReactComponent = View | Text | Image
 export type RegisterRef = React.RefObject<RegisterXComponents>
@@ -33,24 +33,26 @@ export type CommonXData = InitialXData & { measure?: MeasuredDimensionsComponent
 
 export type XViewData = CommonXData & { type: "View", style: StyleProp<ViewStyle> }
 export type XTextData = CommonXData & { type: "Text", style: StyleProp<TextStyle>, text?: string }
+export type XImageData = CommonXData & { type: "Image", style: StyleProp<ImageStyle>, source: ImageSourcePropType }
 
-// export type DestXViewData = Omit<XViewData, "parents"> & IsTransitionFinished
-// export type DestXTextData = Omit<XTextData, "parents"> & IsTransitionFinished
-
-export type XDataInProgress = XViewData | XTextData
+export type XDataInProgress = XViewData | XTextData | XImageData
 
 export type XDataToAddToOrigin =
 	Omit<XViewData, "parents">
 	| Omit<XTextData, "parents">
+	| Omit<XImageData, "parents">
 
 export type XDataToAddToDestination =
 	Omit<XViewData, "parents"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
-	| Omit<XTextData, "parents"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
+	| Omit<XTextData, "parents" | "text"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
+	| Omit<XImageData, "parents" | "source"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
 
 export type XData = XDataInProgress & Required<{ measure: MeasuredDimensionsComponent }>
+
 export type DestinationXData =
 	Omit<XViewData, "parents"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
-	| Omit<XTextData, "parents"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
+	| Omit<XTextData, "parents" | "text"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
+	| Omit<XImageData, "parents" | "source"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
 
 export type RegisterXData = {
 	route: Route,
@@ -61,37 +63,6 @@ export type DestinationRegisterXData = {
 	route: Route,
 	xComponentsData: [] | DestinationXData[]
 }
-
-// 
-// export type InitialXComponentData = {
-// 	tag: TransitionTag,
-// 	parents: TransitionTag[],
-// }
-
-// export type AdditionnalXComponentData = {
-// 	type?: XComponentType,
-// 	measure: MeasuredDimensionsComponent,
-// 	style: Style
-// }
-
-// export type XComponentData = InitialXComponentData & AdditionnalXComponentData
-// export type InProgressXComponentData = InitialXComponentData & Partial<AdditionnalXComponentData>
-// export type DestinationData = InProgressXComponentData & TransitionFinished
-
-// export type RegisterXComponents = {
-// 	route: Route
-// 	xComponentsData: InProgressXComponentData[]
-// }
-
-// export type DestinationRegisterXComponents = {
-// 	route: Route
-// 	xComponentsData: DestinationData[]
-// }
-
-// export type StoreRegisterXComponents = {
-// 	route: Route,
-// 	xComponentsData: XComponentData
-// }
 
 export type NavigationCallback = () => void
 
