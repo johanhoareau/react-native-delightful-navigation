@@ -1,82 +1,60 @@
-import Animated from "react-native-reanimated"
-import withAnimatedTransition from "../hoc/withAnimatedTransition"
-import { useTransitionStore } from "../stores/useTransitionStore"
-import { checkIfAllComponentsDataOriginAreSaved } from "../utils/checkIfAllComponentsDataOriginAreSaved"
-import type { AdditionnalXComponentData, TransitionTag } from "../../types/types"
-import { View, type ViewProps } from "react-native"
-import { useEffect } from "react"
+import { StyleSheet, Text, View, type ViewProps } from 'react-native'
+import type { XData, XTextData, XViewData } from '../../types/types'
+import { useTransitionStore } from '../stores/useTransitionStore'
+import { useTransitionProgress } from '../hooks/useTransitionProgress'
+import Animated from 'react-native-reanimated'
+import { useTransitionLayout } from '../hooks/useTransitionLayout'
+import { useTransitionBorderRadius } from '../hooks/useTransitionBorderRadius'
 
-type ItemProps = AdditionnalXComponentData & { tag: TransitionTag }
+type TemporaryViewProps = Omit<Required<XViewData>, "type">
+type TemporaryTextProps = Omit<XTextData, "type">
 
-const TemporaryView = withAnimatedTransition(Animated.View)
 
-export const Item = ({ type, ...props }: ItemProps) => {
 
-	switch (type) {
-		case "View":
-			return <TemporaryView {...props} />
-		// return <View />
-		default:
-			return null
-	}
-}
-
-export const TemporaryTransitionComponents = () => {
-	const componentsForTransition = useTransitionStore(
-		(state) => state.origin?.xComponentsData
+export const TemporaryView = ({ style, measure, tag }: TemporaryViewProps) => {
+	const destinationData = useTransitionStore(
+		(state) => state.destination?.xComponentsData.find((el) => el.tag === tag)
 	)
-	const transitionIsEnded = useTransitionStore(state => state.status === "end transition")
-	const allComponentsDataOriginAreSaved: boolean = useTransitionStore(
-		(state) => {
-			const isAllSaved = checkIfAllComponentsDataOriginAreSaved(
-				state.origin?.xComponentsData
-			)
-			return isAllSaved
-		}
-	)
-	const setStatusTransition = useTransitionStore(state => state.setStatus)
-	const resetTransitionStore = useTransitionStore(state => state.resetState)
-	const allTransitionIsFinished = useTransitionStore(state => {
-		const arrayOfIsTransitionIsFinished = state.destination?.xComponentsData.map(el => el.isTransitionFinished)
-		const hasOneLeastNotFinished = arrayOfIsTransitionIsFinished?.includes(false)
-		let isAllFinished = hasOneLeastNotFinished !== undefined ? !hasOneLeastNotFinished : false
-		if (arrayOfIsTransitionIsFinished?.length === 0) {
-			isAllFinished = false
-		}
-		return isAllFinished
-	})
-
-	useEffect(() => {
-		if (allComponentsDataOriginAreSaved) {
-			setStatusTransition("navigation")
-		}
-
-	}, [allComponentsDataOriginAreSaved])
-
-	useEffect(() => {
-		if (allTransitionIsFinished) setStatusTransition("end transition")
-	}, [allTransitionIsFinished])
-
-	useEffect(() => {
-		if (transitionIsEnded) {
-			resetTransitionStore()
-			setStatusTransition("off")
-		}
-	}, [transitionIsEnded])
+	const {
+		handlerTransitionLayout,
+		animatedLayoutTransition
+	} = useTransitionLayout(style, measure, destinationData)
+	const { progress } = useTransitionProgress(tag, destinationData)
+	const { animatedBorderRadius } = useTransitionBorderRadius(progress, style, destinationData)
 
 	return (
-		<>
-			{allComponentsDataOriginAreSaved ? (
-				componentsForTransition?.map((el, index) => (
-					<Item
-						key={index}
-						type={el.type}
-						tag={el.tag}
-						measure={el.measure}
-						style={el.style}
-					/>
-				))
-			) : null}
-		</>
+		<Animated.View
+			layout={handlerTransitionLayout}
+			style={[
+				animatedLayoutTransition,
+				animatedBorderRadius
+			]}
+		/>
+	)
+}
+
+
+export const TemporaryText = ({ style, measure, tag, text }: TemporaryTextProps) => {
+	const destinationData = useTransitionStore(
+		(state) => state.destination?.xComponentsData.find((el) => el.tag === tag)
+	)
+	const { handlerTransitionLayout, animatedLayoutTransition } = useTransitionLayout(
+		style,
+		measure,
+		destinationData
+	)
+	const { progress } = useTransitionProgress(tag, destinationData)
+	const { animatedBorderRadius } = useTransitionBorderRadius(progress, style, destinationData)
+
+	return (
+		<Animated.Text
+			layout={handlerTransitionLayout}
+			style={[
+				animatedLayoutTransition,
+				animatedBorderRadius
+			]}
+		>
+			{text ? text : ""}
+		</Animated.Text>
 	)
 }
