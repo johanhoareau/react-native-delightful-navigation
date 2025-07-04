@@ -4,6 +4,7 @@ import type {
 	NavigationCallback,
 	RegisterXData,
 	Route,
+	XData,
 } from "../types/types"
 import { useTransitionStore } from "../_core/stores/useTransitionStore"
 
@@ -34,7 +35,33 @@ export const useDelightfulTransition = (route: Route) => {
 
 	const navigateWithTransition = (arg: NavigateWithTransitionArg) => {
 		navigationCallbackRef.current = arg.navigationCallback
-		prepareBeforeNavigation(registerRef.current, arg.destination)
+		let newData: XData[] = []
+		if (arg.includes && arg.includes?.length > 0) {
+			arg.includes.forEach(tag => {
+				const dataFund = registerRef.current.xComponentsData.filter(el => el.tag === tag)
+				if (dataFund) {
+					newData = [...newData, ...dataFund]
+				}
+			})
+		} else if (arg.excludes && arg.excludes?.length > 0) {
+			let dataFiltered = [...registerRef.current.xComponentsData]
+			arg.excludes.forEach(tag => {
+				dataFiltered = dataFiltered.filter(el => el.tag !== tag)
+			})
+			newData = [...dataFiltered]
+		} else {
+			console.log("HERERE");
+
+			newData = [...registerRef.current.xComponentsData]
+		}
+
+		console.log("newData", newData);
+
+
+		prepareBeforeNavigation({
+			route: registerRef.current.route,
+			xComponentsData: newData
+		}, arg.destination)
 	}
 
 	return {

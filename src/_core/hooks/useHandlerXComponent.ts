@@ -50,7 +50,10 @@ export const useHandlerXComponent = (
 	// }
 
 	useEffect(() => {
-		if (statusTransition === "navigation" || statusTransition === "start transition") {
+		if ((
+			statusTransition === "navigation" || statusTransition === "start transition")
+			&& (hasCorrespondenceIntoStoreOrigin || transitionDestinationRoute === registerRef.current.route)
+		) {
 			setOpacityDuringTransition({ opacity: 0 })
 		} else {
 			setOpacityDuringTransition({})

@@ -69,4 +69,6 @@ export type NavigationCallback = () => void
 export type NavigateWithTransitionArg = {
 	destination: Route,
 	navigationCallback: NavigationCallback
+	includes?: TransitionTag[],
+	excludes?: TransitionTag[]
 }
