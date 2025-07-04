@@ -1,4 +1,4 @@
-import { View, type ViewProps } from "react-native"
+import { Text, View, type ViewProps } from "react-native"
 import { useHandlerXComponent } from "../_core/hooks/useHandlerXComponent"
 import type { XComponentProps } from "../types/props"
 
@@ -23,5 +23,29 @@ export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => 
 			]}
 			{...restProps}
 		/>
+	)
+}
+
+export const XText = ({ registerRef, tag, style, ...restProps }: XViewProps) => {
+	const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
+		registerRef,
+		tag,
+		style,
+		"Text",
+		restProps.children
+	)
+
+	// console.log(restProps.children);
+
+	return (
+		<Text
+			ref={xComponentRef}
+			style={[
+				style,
+				opacityDuringTransition
+			]}
+			{...restProps}
+		/>
+
 	)
 }

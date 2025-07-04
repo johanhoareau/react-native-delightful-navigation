@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import type {
 	ReactComponent,
 	RegisterRef,
@@ -14,6 +14,7 @@ export const useHandlerXComponent = (
 	tag: TransitionTag,
 	style: Style,
 	type: XComponentType,
+	text?: string
 ) => {
 
 
@@ -68,12 +69,25 @@ export const useHandlerXComponent = (
 					y: pageY,
 				}
 
-				addOriginComponentData({
-					tag,
-					type,
-					style,
-					measure: measurement,
-				})
+				if (type === "View") {
+					addOriginComponentData({
+						tag,
+						type,
+						style,
+						measure: measurement,
+					})
+				} else if (type === "Text") {
+
+					if (typeof text === "string") {
+						addOriginComponentData({
+							tag,
+							type,
+							style,
+							text,
+							measure: measurement,
+						})
+					}
+				}
 			})
 		}
 	}, [
@@ -91,7 +105,6 @@ export const useHandlerXComponent = (
 			transitionDestinationRoute === registerRef.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && statusTransition === "start transition") {
-			console.log("statusTransition", statusTransition);
 			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
 				const measurement = {
 					height,
