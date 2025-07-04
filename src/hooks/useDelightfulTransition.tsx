@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import type {
 	NavigateWithTransitionArg,
 	NavigationCallback,
-	RegisterXComponents,
+	RegisterXData,
 	Route,
 } from "../types/types"
 import { useTransitionStore } from "../_core/stores/useTransitionStore"
-import { checkIfAllComponentsDataOriginAreSaved } from "../_core/utils/checkIfAllComponentsDataOriginAreSaved"
 
 
 export const useDelightfulTransition = (route: Route) => {
@@ -17,7 +16,7 @@ export const useDelightfulTransition = (route: Route) => {
 	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
 
 
-	const registerRef = useRef<RegisterXComponents>({
+	const registerRef = useRef<RegisterXData>({
 		route,
 		xComponentsData: [],
 	})

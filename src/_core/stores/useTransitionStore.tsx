@@ -1,22 +1,27 @@
 import { create } from "zustand"
 import { combine } from "zustand/middleware"
 import type {
-	AdditionnalXComponentData,
-	DestinationRegisterXComponents,
-	RegisterXComponents,
+	DestinationRegisterXData,
+	InitialXData,
+	RegisterXData,
 	Route,
-	TransitionFinished,
 	TransitionStatus,
 	TransitionTag,
-	XComponentData,
+	XDataToAddToDestination,
+	XDataToAddToOrigin,
 } from "../../types/types"
 import { produce } from "immer"
 
-const initialState =
-{
-	status: "off" as TransitionStatus,
-	origin: null as RegisterXComponents | null,
-	destination: null as DestinationRegisterXComponents | null,
+type State = {
+	status: TransitionStatus,
+	origin?: RegisterXData,
+	destination?: DestinationRegisterXData,
+}
+
+const initialState: State = {
+	status: "off",
+	origin: undefined,
+	destination: undefined,
 }
 
 export const useTransitionStore = create(
@@ -27,7 +32,7 @@ export const useTransitionStore = create(
 				set({ status: newStatus })
 			},
 			prepareBeforeNavigation: (
-				newOrigin: RegisterXComponents,
+				newOrigin: RegisterXData,
 				newDestinationRoute: Route
 			) => {
 				set({
@@ -36,16 +41,20 @@ export const useTransitionStore = create(
 				})
 			},
 			addOriginComponentData: (
-				componentData: AdditionnalXComponentData & { tag: TransitionTag }
+				componentData: Required<XDataToAddToOrigin>
 			) => {
 				set(
-					produce((state) => {
-						const indexComponent = state.origin.xComponentsData.findIndex(
-							(el: XComponentData) => el.tag === componentData.tag
+					produce((state: State) => {
+						if (!state.origin) {
+							throw new Error("Origin is not initialized")
+						}
+						const indexComponent = state?.origin?.xComponentsData.findIndex(
+							(el: InitialXData) => el.tag === componentData.tag
 						)
+
 						if (indexComponent !== -1) {
 							state.origin.xComponentsData[indexComponent] = {
-								...state.origin.xComponentsData[indexComponent],
+								...state.origin.xComponentsData[indexComponent] as InitialXData,
 								...componentData,
 							}
 						}
@@ -53,12 +62,15 @@ export const useTransitionStore = create(
 				)
 			},
 			addDestinationComponentData: (
-				componentData: AdditionnalXComponentData & { tag: TransitionTag } & TransitionFinished
+				componentData: XDataToAddToDestination
 			) => {
 				set(
-					produce((state) => {
+					produce((state: State) => {
+						if (!state.destination) {
+							throw new Error("Destination is not initialized")
+						}
 						const isAlreadyAdd = state.destination.xComponentsData.find(
-							(el: XComponentData) => el.tag === componentData.tag
+							(el: Omit<InitialXData, "parents">) => el.tag === componentData.tag
 						)
 						if (!isAlreadyAdd) {
 							state.destination.xComponentsData = [
@@ -71,11 +83,18 @@ export const useTransitionStore = create(
 			},
 			setTransitionComponentIsFinished: (tag: TransitionTag) => {
 				set(
-					produce(state => {
+					produce((state: State) => {
+						if (!state.destination) {
+							throw new Error("Destination is not initialized to start transition")
+						}
 						const indexDestinationComponent = state.destination.xComponentsData.findIndex(
-							(el: XComponentData & TransitionFinished) => el.tag === tag
+							(el: Omit<InitialXData, "parents">) => el.tag === tag
 						)
-						state.destination.xComponentsData[indexDestinationComponent].isTransitionFinished = true
+						if (
+							state.destination.xComponentsData[indexDestinationComponent]
+						) {
+							state.destination.xComponentsData[indexDestinationComponent].isTransitionFinished = true
+						}
 					})
 				)
 			},
