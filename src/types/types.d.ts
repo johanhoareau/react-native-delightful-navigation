@@ -54,6 +54,11 @@ export type DestinationXData =
 	| Omit<XTextData, "parents" | "text"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
 	| Omit<XImageData, "parents" | "source"> & IsTransitionFinished & Required<{ measure: MeasuredDimensionsComponent }>
 
+export type InitialRegisterXData = {
+	route: Route,
+	xComponentsData: [] | InitialXData[]
+}
+
 export type RegisterXData = {
 	route: Route,
 	xComponentsData: [] | XData[]
@@ -70,5 +75,6 @@ export type NavigateWithTransitionArg = {
 	destination: Route,
 	navigationCallback: NavigationCallback
 	includes?: TransitionTag[],
-	excludes?: TransitionTag[]
+	excludes?: TransitionTag[],
+	itemsListToInclude?: TransitionTag[],
 }

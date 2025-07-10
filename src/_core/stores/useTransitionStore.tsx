@@ -2,7 +2,9 @@ import { create } from "zustand"
 import { combine } from "zustand/middleware"
 import type {
 	DestinationRegisterXData,
+	InitialRegisterXData,
 	InitialXData,
+	NavigationCallback,
 	RegisterXData,
 	Route,
 	TransitionStatus,
@@ -14,14 +16,16 @@ import { produce } from "immer"
 
 type State = {
 	status: TransitionStatus,
-	origin?: RegisterXData,
+	origin?: RegisterXData | InitialRegisterXData,
 	destination?: DestinationRegisterXData,
+	navigationCallback: NavigationCallback | null
 }
 
 const initialState: State = {
 	status: "off",
 	origin: undefined,
 	destination: undefined,
+	navigationCallback: null
 }
 
 export const useTransitionStore = create(
@@ -32,12 +36,14 @@ export const useTransitionStore = create(
 				set({ status: newStatus })
 			},
 			prepareBeforeNavigation: (
-				newOrigin: RegisterXData,
-				newDestinationRoute: Route
+				newOrigin: InitialRegisterXData,
+				newDestinationRoute: Route,
+				navigationCallback: NavigationCallback
 			) => {
 				set({
 					origin: newOrigin,
 					destination: { route: newDestinationRoute, xComponentsData: [] },
+					navigationCallback
 				})
 			},
 			addOriginComponentData: (
