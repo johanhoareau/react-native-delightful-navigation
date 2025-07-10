@@ -9,84 +9,23 @@ import type {
 import { parseTree } from "../_core/utils/parseTree"
 import Animated from "react-native-reanimated";
 import { useTransitionStore } from "../_core/stores/useTransitionStore";
+import HandlerXScreenState from "../_core/handlerState/HandlerXScreenState";
 
 type XScreenProps = {
 	registerRef: RegisterRef
 } & PropsWithChildren
 
 export const XScreen = ({ registerRef, children }: XScreenProps) => {
-	const setStatusTransition = useTransitionStore(state => state.setStatus)
-	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
-	const isDestinationRoute = useTransitionStore(state => (
-		state.destination?.route === registerRef.current.route
-	))
-	const headerHeight = useHeaderHeight()
+
 	const landmarkRef = useRef<View | null>(null)
-
-	const [isReadyToMeasureDestinationComponents, setIsReadyToMeasureDestinationComponents] = useState({
-		firsHeaderHeightSaved: null,
-		isReady: false
-	})
-
-
-
-	// Initialization register
-	useEffect(() => {
-		const tempRegisterXComponents: InitialXData[] = []
-		const childrenArray = React.Children.toArray(children)
-		childrenArray.forEach((el) => parseTree(el, tempRegisterXComponents))
-
-		// console.log(JSON.stringify(tempRegisterXComponents, null, 2)) // L’arborescence complète ici
-		registerRef.current.xComponentsData = tempRegisterXComponents
-	}, [children])
-
-
-	// If destination screen, check when new screen layout is stable to start measurements of destination components
-	useEffect(() => {
-		if (isDestinationRoute && !headerHeight) {
-			setStatusTransition("start transition")
-			return
-		}
-
-		let intervalCheckLayout: NodeJS.Timeout | undefined
-		if (!isReadyToMeasureDestinationComponents.isReady) {
-			if (isDestinationRoute && landmarkRef.current) {
-				intervalCheckLayout = setInterval(() => {
-					landmarkRef.current?.measure((_, __, ___, ____, _____, pageY) => {
-						setIsReadyToMeasureDestinationComponents((prevState) => {
-							if (!prevState.firsHeaderHeightSaved) {
-								return {
-									firsHeaderHeightSaved: headerHeight,
-									isReady: false
-								}
-							}
-							if (pageY >= prevState.firsHeaderHeightSaved) {
-								return {
-									...prevState,
-									isReady: true
-								}
-
-							}
-							return prevState
-						})
-					})
-
-				}, 16.67)
-			}
-		} else {
-			if (isStatusOnNavigation) {
-				setStatusTransition("start transition")
-				clearInterval(intervalCheckLayout)
-			}
-		}
-
-		return () => clearInterval(intervalCheckLayout)
-
-	}, [isStatusOnNavigation, isReadyToMeasureDestinationComponents, headerHeight])
-
 
 	return (
 		<>
+			<HandlerXScreenState
+				children={children}
+				registerRef={registerRef}
+				landmarkRef={landmarkRef}
+			/>
 			<Animated.View ref={landmarkRef} />
 			{children}
 		</>

@@ -77,8 +77,6 @@ export const TemporaryImage = ({ style, measure, tag, source }: TemporaryImagePr
 	const { animatedBorderRadius } = useTransitionBorderRadius(progress, style, destinationData)
 
 
-	console.log("source", source);
-
 	return (
 		<Animated.Image
 			layout={handlerTransitionLayout}
