@@ -4,7 +4,9 @@ import { FlowManager } from "react-native-delightful-navigation"
 export default function RootLayout() {
 	return (
 		<FlowManager>
-			<Stack />
+			<Stack
+				screenOptions={{ headerShown: false }}
+			/>
 		</FlowManager>
 	)
 }

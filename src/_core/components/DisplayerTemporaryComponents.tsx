@@ -55,6 +55,8 @@ export const DisplayerTemporaryComponents = () => {
 
 	useEffect(() => {
 		if (allComponentsDataOriginAreSaved) {
+			console.log("navigate");
+
 			setStatusTransition("navigation")
 		}
 

@@ -1,53 +1,80 @@
-import { Button, StyleSheet, Text, View } from "react-native"
+import { Button, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import {
 	useDelightfulTransition,
+	XImage,
 	XScreen,
+	XText,
 	XView,
 } from "react-native-delightful-navigation"
 import { useRouter } from "expo-router"
+import { ELEMENTS, type ItemList } from "../constants"
 
 export default function App() {
 	const router = useRouter()
-	const { register, navigateWithTransition } = useDelightfulTransition("/")
+	const { register, navigateWithTransition, setRegisterList } = useDelightfulTransition("/")
 
 
-	const handleNavigation = () => {
+	// const handleNavigation = () => {
+	// 	navigateWithTransition({
+	// 		destination: "/details",
+	// 		navigationCallback: () => {
+	// 			router.navigate("/details")
+	// 		},
+	// 		includes: ["text", "image"]
+	// 	})
+	// }
+
+	const handleNavigationToDetails = (id: number) => {
 		navigateWithTransition({
-			destination: "/details",
+			destination: `/details/${id}`,
 			navigationCallback: () => {
-				router.navigate("/details")
-				// console.log("Navigate !")
+				router.navigate(`/details/${id}`)
 			},
+			itemsListToInclude: [
+				`container-${id}`,
+				`image-${id}`,
+				`title-${id}`
+			]
 		})
 	}
+
 
 	return (
 		<XScreen {...register}>
 			<View style={styles.container}>
-				<XView
-					{...register}
-					tag="button1"
-					style={styles.button}
-				/>
-				<XView
-					{...register}
-					tag="button2"
-					style={styles.button2}
-				>
-					<XView
-						{...register}
-						tag="inner-button"
-						style={styles.innerButton}
-					/>
-				</XView>
-				<XView
-					{...register}
-					tag="button3"
-					style={styles.button}
-				/>
-				<Button
-					title="Go to Details"
-					onPress={handleNavigation}
+				<FlatList
+					data={ELEMENTS}
+					keyExtractor={(item) => item.id.toString()}
+					renderItem={({ item }) => {
+						return (
+							<TouchableOpacity onPress={() => handleNavigationToDetails(item.id)}>
+								<XView
+									{...register}
+									tag={`container-${item.id}`}
+									style={styles.item}
+								>
+									<XImage
+										{...register}
+										tag={`image-${item.id}`}
+										source={item.image}
+										style={styles.image}
+									/>
+									<View style={{ flex: 1, gap: 5 }}>
+										<XText
+											{...register}
+											tag={`title-${item.id}`}
+											style={styles.title}
+										>
+											{item.title}
+										</XText>
+										<Text>
+											Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae tenetur excepturi quidem provident sequi
+										</Text>
+									</View>
+								</XView>
+							</TouchableOpacity>
+						)
+					}}
 				/>
 			</View>
 		</XScreen>
@@ -57,30 +84,31 @@ export default function App() {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		alignItems: "center",
-		justifyContent: "center",
 		gap: 50,
+		// backgroundColor: '#307'
 	},
-	button: {
-		margin: 20,
+	item: {
+		flex: 1,
+		// height: 75,
+		// borderWidth: 1,
+		borderRadius: 5,
+		borderColor: "#AAA",
+		marginBottom: 25,
 		padding: 10,
-		borderWidth: 3,
-		width: 100,
-		height: 100,
-		backgroundColor: "lightblue",
+		flexDirection: "row",
+		gap: 20,
+		marginHorizontal: 10,
+		alignItems: 'center',
 	},
-	button2: {
-		margin: 20,
-		padding: 10,
-		borderWidth: 1,
-		opacity: 0.1,
-		width: "100%",
-		height: 100,
-		backgroundColor: "orange",
+	image: {
+		height: 75,
+		width: 75,
+		borderRadius: 75
 	},
-	innerButton: {
-		width: 20,
-		aspectRatio: 1 / 1,
-		backgroundColor: "grey",
-	},
+	title: {
+		fontSize: 18,
+		fontWeight: "400",
+		// color: "#000"
+	}
+
 })
