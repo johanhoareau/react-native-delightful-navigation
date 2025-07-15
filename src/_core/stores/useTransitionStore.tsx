@@ -18,15 +18,18 @@ type State = {
 	status: TransitionStatus,
 	origin?: RegisterXData | InitialRegisterXData,
 	destination?: DestinationRegisterXData,
-	navigationCallback: NavigationCallback | null
+	navigationCallback: NavigationCallback | null,
+	history: Pick<State, "origin" | "destination">[]
 }
 
 const initialState: State = {
 	status: "off",
 	origin: undefined,
 	destination: undefined,
-	navigationCallback: null
+	navigationCallback: null,
+	history: []
 }
+
 
 export const useTransitionStore = create(
 	combine(
@@ -40,11 +43,39 @@ export const useTransitionStore = create(
 				newDestinationRoute: Route,
 				navigationCallback: NavigationCallback
 			) => {
-				set({
-					origin: newOrigin,
-					destination: { route: newDestinationRoute, xComponentsData: [] },
-					navigationCallback
-				})
+				set(
+					produce((state: State) => {
+						if (!state.origin && !state.destination) {
+							state.origin = newOrigin
+							state.destination = { route: newDestinationRoute, xComponentsData: [] }
+							state.navigationCallback = navigationCallback
+						}
+					})
+				)
+			},
+			prepareBeforeBack: (navigationCallback: NavigationCallback) => {
+				set(
+					produce((state: State) => {
+						if (!state.origin && !state.destination) {
+							// FIXME: select history by comparing with origin-destination navigation
+							state.origin = {
+								route: state.history[0].destination.route,
+								xComponentsData: state.history[0]?.destination?.xComponentsData.map(el => {
+									return {
+										tag: el.tag,
+										parent: ["List"]
+									}
+								})
+
+							}
+							state.destination = {
+								route: state.history[0]?.origin.route,
+								xComponentsData: []
+							}
+							state.navigationCallback = navigationCallback
+						}
+					})
+				)
 			},
 			addOriginComponentData: (
 				componentData: Required<XDataToAddToOrigin>
@@ -104,8 +135,33 @@ export const useTransitionStore = create(
 					})
 				)
 			},
+			saveHistory: () => {
+				set(
+					produce((state: State) => {
+						const reinitializedDestinationForHistory = state.destination?.xComponentsData.map(el => ({
+							...el,
+							isTransitionFinished: false
+						}))
+
+						state.history = [
+							{
+								origin: state.origin,
+								destination: {
+									route: state.destination.route,
+									xComponentsData: reinitializedDestinationForHistory
+								},
+							},
+							...state.history,
+						]
+					}))
+			},
 			resetState: () => {
-				set(initialState)
+				set(state => {
+					return {
+						...initialState,
+						history: state.history
+					}
+				})
 			}
 		})
 	)

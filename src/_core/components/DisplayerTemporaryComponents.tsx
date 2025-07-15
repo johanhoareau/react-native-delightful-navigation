@@ -42,6 +42,7 @@ export const DisplayerTemporaryComponents = () => {
 		}
 	)
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
+	const saveHistory = useTransitionStore(state => state.saveHistory)
 	const resetTransitionStore = useTransitionStore(state => state.resetState)
 	const allTransitionIsFinished = useTransitionStore(state => {
 		const arrayOfIsTransitionIsFinished = state.destination?.xComponentsData.map(el => el.isTransitionFinished)
@@ -73,6 +74,7 @@ export const DisplayerTemporaryComponents = () => {
 	useEffect(() => {
 		if (transitionIsEnded) {
 			console.log("OFF");
+			saveHistory()
 			resetTransitionStore()
 			setStatusTransition("off")
 		}

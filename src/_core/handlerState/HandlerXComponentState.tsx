@@ -42,19 +42,12 @@ export const HandlerXComponentState = ({
 		(state) => state.addDestinationComponentData
 	)
 
-	// if (tag === "button2" && registerRef.current.route === "/") {
-	// 	const dataLog = {
-	// 		tag,
-	// 		route: registerRef.current.route,
-	// 		statusTransition
-	// 	}
-	// 	console.log("RENDER", JSON.stringify(dataLog, null, 2))
-	// }
+
 
 	useEffect(() => {
-		if ((
-			statusTransition === "navigation" || statusTransition === "start transition")
-			&& (hasCorrespondenceIntoStoreOrigin || transitionDestinationRoute === registerRef.current.route)
+		if (
+			(statusTransition === "navigation" || statusTransition === "start transition")
+			&& hasCorrespondenceIntoStoreOrigin
 		) {
 			setOpacityDuringTransition({ opacity: 0 })
 		} else {

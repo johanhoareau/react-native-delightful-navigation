@@ -1,11 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Alert, StyleSheet, Text, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { useHeaderHeight } from '@react-navigation/elements';
-import type { InitialXData } from '../../types/types';
+import type { InitialXData, RegisterRef } from '../../types/types';
 import { parseTree } from '../utils/parseTree';
+import { useNavigation, type NavigationProp, type NavigationState } from '@react-navigation/native';
 
-export default function HandlerXScreenState({ registerRef, children, landmarkRef }) {
+type HandlerXScreenStateProps = {
+	registerRef: RegisterRef,
+	navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState"> & {
+		getState(): NavigationState | undefined;
+	},
+}
+
+// FIXME: call useNavigation here instead pass it by props
+export default function HandlerXScreenState({ registerRef, children, landmarkRef, navigation }: HandlerXScreenStateProps) {
+	// const navigation = useNavigation()
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
 	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
 	const isOriginRoute = useTransitionStore(state =>
@@ -17,6 +27,7 @@ export default function HandlerXScreenState({ registerRef, children, landmarkRef
 	const navigationCallback = useTransitionStore(state =>
 		state.navigationCallback
 	)
+	const prepareBeforeBack = useTransitionStore(state => state.prepareBeforeBack)
 	const headerHeight = useHeaderHeight()
 
 	const [isReadyToMeasureDestinationComponents, setIsReadyToMeasureDestinationComponents] = useState({
@@ -37,6 +48,7 @@ export default function HandlerXScreenState({ registerRef, children, landmarkRef
 
 	useEffect(() => {
 		if (isOriginRoute && isStatusOnNavigation && navigationCallback) {
+
 			navigationCallback()
 		}
 	}, [navigationCallback, isStatusOnNavigation, isOriginRoute])
@@ -88,10 +100,26 @@ export default function HandlerXScreenState({ registerRef, children, landmarkRef
 		return () => clearInterval(intervalCheckLayout)
 
 	}, [isStatusOnNavigation, isReadyToMeasureDestinationComponents, headerHeight])
+
+
+	// handle navigation back
+	useEffect(() => {
+		const unsubscribe = navigation?.addListener('beforeRemove', (e) => {
+			e.preventDefault();
+
+			prepareBeforeBack(() => {
+				navigation.dispatch(e.data.action)
+
+			})
+		});
+
+		return unsubscribe;
+	}, [navigation])
+
+
 	return (
-		<View style={{ position: 'absolute' }}>
-			<Text>HandlerXScreenState</Text>
-		</View>
+		<>
+		</>
 	)
 }
 

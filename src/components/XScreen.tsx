@@ -10,12 +10,16 @@ import { parseTree } from "../_core/utils/parseTree"
 import Animated from "react-native-reanimated";
 import { useTransitionStore } from "../_core/stores/useTransitionStore";
 import HandlerXScreenState from "../_core/handlerState/HandlerXScreenState";
+import type { NavigationProp, NavigationState } from "@react-navigation/native";
 
 type XScreenProps = {
-	registerRef: RegisterRef
+	registerRef: RegisterRef,
+	navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState"> & {
+		getState(): NavigationState | undefined;
+	}
 } & PropsWithChildren
 
-export const XScreen = ({ registerRef, children }: XScreenProps) => {
+export const XScreen = ({ registerRef, children, navigation }: XScreenProps) => {
 
 	const landmarkRef = useRef<View | null>(null)
 
@@ -25,6 +29,7 @@ export const XScreen = ({ registerRef, children }: XScreenProps) => {
 				children={children}
 				registerRef={registerRef}
 				landmarkRef={landmarkRef}
+				navigation={navigation}
 			/>
 			<Animated.View ref={landmarkRef} />
 			{children}

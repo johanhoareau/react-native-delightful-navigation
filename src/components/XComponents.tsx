@@ -20,6 +20,7 @@ export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => 
 	const [opacityDuringTransition, setOpacityDuringTransition] = useState<{ opacity?: number } | null>(null)
 
 
+
 	return (
 		<>
 			<HandlerXComponentState
