@@ -67,6 +67,8 @@
         "@evilmartians/lefthook": "^1.5.0",
         "@react-native/babel-preset": "0.78.2",
         "@react-native/eslint-config": "^0.78.0",
+        "@react-navigation/native": "^7.1.6",
+        "@react-navigation/native-stack": "^7.3.10",
         "@release-it/conventional-changelog": "^9.0.2",
         "@types/jest": "^29.5.5",
         "@types/react": "^19.0.12",
@@ -88,6 +90,8 @@
         "immer": "^10.1.1"
     },
     "peerDependencies": {
+        "@react-navigation/native": "^7.1.6",
+        "@react-navigation/native-stack": "^7.3.10",
         "react": "*",
         "react-native": "*",
         "react-native-reanimated": "^3.17.5",
