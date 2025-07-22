@@ -53,26 +53,32 @@ export const useTransitionStore = create(
 					})
 				)
 			},
-			prepareBeforeBack: (navigationCallback: NavigationCallback) => {
+			prepareBeforeBack: (navigationCallback: NavigationCallback, currentRoute: Route, routeBack: Route) => {
 				set(
 					produce((state: State) => {
 						if (!state.origin && !state.destination) {
-							// FIXME: select history by comparing with origin-destination navigation
-							state.origin = {
-								route: state.history[0].destination.route,
-								xComponentsData: state.history[0]?.destination?.xComponentsData.map(el => {
-									return {
-										tag: el.tag,
-										parent: ["List"]
-									}
-								})
+							const transitionDataForBack = state.history.find(data => (
+								data.origin.route === routeBack && data.destination.route === currentRoute
+							))
+							console.log(transitionDataForBack);
 
+							if (transitionDataForBack) {
+								state.origin = {
+									route: transitionDataForBack.destination.route,
+									xComponentsData: transitionDataForBack.destination.xComponentsData.map(el => {
+										return {
+											tag: el.tag,
+											parents: ["List"]
+										}
+									})
+
+								}
+								state.destination = {
+									route: transitionDataForBack.origin.route,
+									xComponentsData: []
+								}
+								state.navigationCallback = navigationCallback
 							}
-							state.destination = {
-								route: state.history[0]?.origin.route,
-								xComponentsData: []
-							}
-							state.navigationCallback = navigationCallback
 						}
 					})
 				)
@@ -140,21 +146,21 @@ export const useTransitionStore = create(
 					produce((state: State) => {
 
 						if (state.origin && state.destination) {
-						const reinitializedDestinationForHistory = state.destination?.xComponentsData.map(el => ({
-							...el,
-							isTransitionFinished: false
-						}))
+							const reinitializedDestinationForHistory = state.destination?.xComponentsData.map(el => ({
+								...el,
+								isTransitionFinished: false
+							}))
 
-						state.history = [
-							{
-								origin: state.origin,
-								destination: {
-									route: state.destination.route,
-									xComponentsData: reinitializedDestinationForHistory
+							state.history = [
+								{
+									origin: state.origin,
+									destination: {
+										route: state.destination.route,
+										xComponentsData: reinitializedDestinationForHistory
+									},
 								},
-							},
-							...state.history,
-						]
+								...state.history,
+							]
 						}
 					}))
 			},

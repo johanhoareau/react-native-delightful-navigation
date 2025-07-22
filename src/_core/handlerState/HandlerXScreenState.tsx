@@ -119,17 +119,40 @@ export default function HandlerXScreenState({ registerRef, transitionIsFinished,
 
 	// handle navigation back
 	useEffect(() => {
+		if (!navigation) return
 		const unsubscribe = navigation?.addListener('beforeRemove', (e) => {
 			e.preventDefault();
+			const action = e.data.action;
 
-			prepareBeforeBack(() => {
-				navigation.dispatch(e.data.action)
+			if (action.type === 'POP' || action.type === 'GO_BACK') {
+				const routes = navigation?.getState()?.routes
+				const currentIndex = navigation?.getState()?.index
 
-			})
+				if (currentIndex !== undefined) {
+					const destinationRoute = routes && routes[currentIndex - 1]
+					let routeBack = destinationRoute?.name
+
+					if (destinationRoute?.params) {
+						Object.entries(destinationRoute.params).forEach(([key, value]) => {
+							routeBack = routeBack?.replace(`[${key}]`, String(value));
+						});
+					}
+
+					routeBack = routeBack === 'index' ? '/' : `/${routeBack}`
+
+					prepareBeforeBack(
+						() => navigation.dispatch(e.data.action),
+						registerRef.current.route,
+						routeBack
+					)
+				}
+			}
+
 		});
 
 		return unsubscribe;
 	}, [navigation])
+
 
 
 	return (
@@ -137,5 +160,3 @@ export default function HandlerXScreenState({ registerRef, transitionIsFinished,
 		</>
 	)
 }
-
-const styles = StyleSheet.create({})
