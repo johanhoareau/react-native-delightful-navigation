@@ -22,6 +22,8 @@ type HandlerXScreenStateProps = {
 export default function HandlerXScreenState({ registerRef, transitionIsFinished, origin, destination, children, landmarkRef, navigation }: HandlerXScreenStateProps) {
 	// const navigation = useNavigation()
 	const isStatusOnEnd = useTransitionStore(state => state.status === "end transition")
+	const isStatusOnNavigationWithoutTransition = useTransitionStore(state => state.status === "navigation without transition")
+	const resetTransitionStore = useTransitionStore(state => state.resetState)
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
 	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
 	const originRoute = useTransitionStore(state => state.origin?.route)
@@ -62,11 +64,20 @@ export default function HandlerXScreenState({ registerRef, transitionIsFinished,
 	}, [children])
 
 	useEffect(() => {
-		if (isOriginRoute && isStatusOnNavigation && navigationCallback) {
+		const isReadyToNavigateWithoutTransition = isStatusOnNavigationWithoutTransition && navigationCallback && isOriginRoute
+		if (isReadyToNavigateWithoutTransition) {
+			navigationCallback()
+			resetTransitionStore()
+			setStatusTransition("off")
+		}
+	}, [isStatusOnNavigationWithoutTransition, navigationCallback, isOriginRoute])
 
+	useEffect(() => {
+		const isReadyToNavigateWithTransition = !!(isOriginRoute && isStatusOnNavigation && navigationCallback)
+		if (isReadyToNavigateWithTransition) {
 			navigationCallback()
 		}
-	}, [navigationCallback, isStatusOnNavigation, isOriginRoute])
+	}, [navigationCallback, isStatusOnNavigation, isOriginRoute, isStatusOnNavigationWithoutTransition])
 
 
 	// If destination screen, check when new screen layout is stable to start measurements of destination components

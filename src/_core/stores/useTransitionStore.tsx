@@ -60,7 +60,6 @@ export const useTransitionStore = create(
 							const transitionDataForBack = state.history.find(data => (
 								data.origin.route === routeBack && data.destination.route === currentRoute
 							))
-							console.log(transitionDataForBack);
 
 							if (transitionDataForBack) {
 								state.origin = {
@@ -77,9 +76,16 @@ export const useTransitionStore = create(
 									route: transitionDataForBack.origin.route,
 									xComponentsData: []
 								}
-								state.navigationCallback = navigationCallback
+							} else {
+								console.log("navigation without transition");
+								state.status = "navigation without transition"
+								state.origin = {
+									route: currentRoute,
+									xComponentsData: []
+								}
 							}
 						}
+						state.navigationCallback = navigationCallback
 					})
 				)
 			},

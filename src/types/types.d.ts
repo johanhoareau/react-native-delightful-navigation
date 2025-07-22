@@ -2,9 +2,8 @@ import type { Image, ImageSourcePropType, ImageStyle, Text, TextStyle, View, Vie
 
 export type TransitionStatus =
 	| "off"
-	| "before navigation"
+	| "navigation without transition"
 	| "navigation"
-	| "before transition"
 	| "start transition"
 	| "end transition"
 	| "cleaning"
