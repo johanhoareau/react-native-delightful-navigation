@@ -1,25 +1,21 @@
-import React, { useEffect, useRef, useState, type PropsWithChildren } from "react"
+import { useRef, type PropsWithChildren } from "react"
 import { View } from "react-native"
-import { useHeaderHeight } from '@react-navigation/elements';
-import type {
-	InitialXData,
-	// InProgressXComponentData,
-	RegisterRef,
-} from "../types/types"
-import { parseTree } from "../_core/utils/parseTree"
-import Animated from "react-native-reanimated";
-import { useTransitionStore } from "../_core/stores/useTransitionStore";
+import type { RegisterRef, Route } from "../types/types"
+import Animated, { type SharedValue } from "react-native-reanimated";
 import HandlerXScreenState from "../_core/handlerState/HandlerXScreenState";
 import type { NavigationProp, NavigationState } from "@react-navigation/native";
 
 type XScreenProps = {
 	registerRef: RegisterRef,
+	transitionIsFinished: SharedValue<boolean>
 	navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState"> & {
 		getState(): NavigationState | undefined;
 	}
+	origin: SharedValue<Route | null>,
+	destination: SharedValue<Route | null>
 } & PropsWithChildren
 
-export const XScreen = ({ registerRef, children, navigation }: XScreenProps) => {
+export const XScreen = ({ registerRef, transitionIsFinished, origin, destination, children, navigation }: XScreenProps) => {
 
 	const landmarkRef = useRef<View | null>(null)
 
@@ -28,8 +24,11 @@ export const XScreen = ({ registerRef, children, navigation }: XScreenProps) => 
 			<HandlerXScreenState
 				children={children}
 				registerRef={registerRef}
+				origin={origin}
+				destination={destination}
 				landmarkRef={landmarkRef}
 				navigation={navigation}
+				transitionIsFinished={transitionIsFinished}
 			/>
 			<Animated.View ref={landmarkRef} />
 			{children}

@@ -1,29 +1,33 @@
-import { Alert, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import { View } from 'react-native'
+import React, { useEffect, useState, type PropsWithChildren } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { useHeaderHeight } from '@react-navigation/elements';
-import type { InitialXData, RegisterRef } from '../../types/types';
-import { parseTree } from '../utils/parseTree';
-import { useNavigation, type NavigationProp, type NavigationState } from '@react-navigation/native';
+import type { InitialXData, RegisterRef, Route } from '../../types/types';
+import { parseTree, type ElementToParseType } from '../utils/parseTree';
+import { type NavigationProp, type NavigationState } from '@react-navigation/native';
+import type { SharedValue } from 'react-native-reanimated';
 
 type HandlerXScreenStateProps = {
 	registerRef: RegisterRef,
+	transitionIsFinished: SharedValue<boolean>,
+	origin: SharedValue<Route | null>,
+	destination: SharedValue<Route | null>,
 	navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState"> & {
 		getState(): NavigationState | undefined;
 	},
-}
+	landmarkRef: React.RefObject<View | null>,
+} & PropsWithChildren
 
 // FIXME: call useNavigation here instead pass it by props
-export default function HandlerXScreenState({ registerRef, children, landmarkRef, navigation }: HandlerXScreenStateProps) {
+export default function HandlerXScreenState({ registerRef, transitionIsFinished, origin, destination, children, landmarkRef, navigation }: HandlerXScreenStateProps) {
 	// const navigation = useNavigation()
+	const isStatusOnEnd = useTransitionStore(state => state.status === "end transition")
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
 	const isStatusOnNavigation = useTransitionStore(state => state.status === "navigation")
-	const isOriginRoute = useTransitionStore(state =>
-		state.origin?.route === registerRef.current.route
-	)
-	const isDestinationRoute = useTransitionStore(state => (
-		state.destination?.route === registerRef.current.route
-	))
+	const originRoute = useTransitionStore(state => state.origin?.route)
+	const isOriginRoute = originRoute === registerRef.current.route
+	const destinationRoute = useTransitionStore(state => state.destination?.route)
+	const isDestinationRoute = destinationRoute === registerRef.current.route
 	const navigationCallback = useTransitionStore(state =>
 		state.navigationCallback
 	)
@@ -31,15 +35,26 @@ export default function HandlerXScreenState({ registerRef, children, landmarkRef
 	const headerHeight = useHeaderHeight()
 
 	const [isReadyToMeasureDestinationComponents, setIsReadyToMeasureDestinationComponents] = useState({
-		firsHeaderHeightSaved: null,
+		firstHeaderHeightSaved: null as number | null,
 		isReady: false
 	})
-	// console.log("RENDER -->> XScreen", registerRef.current.route);
+
+	// Set data for entering animation after transition is finished
+	useEffect(() => {
+		if (isStatusOnNavigation) {
+			origin.value = originRoute ? originRoute : null
+			destination.value = destinationRoute ? destinationRoute : null
+			transitionIsFinished.value = false
+		}
+		if (isStatusOnEnd) {
+			transitionIsFinished.value = true
+		}
+	}, [isStatusOnNavigation, isStatusOnEnd])
 
 	// Initialization register
 	useEffect(() => {
 		const tempRegisterXComponents: InitialXData[] = []
-		const childrenArray = React.Children.toArray(children)
+		const childrenArray = React.Children.toArray(children) as ElementToParseType[]
 		childrenArray.forEach((el) => parseTree(el, tempRegisterXComponents))
 
 		// console.log(JSON.stringify(tempRegisterXComponents, null, 2)) // L’arborescence complète ici
@@ -69,13 +84,13 @@ export default function HandlerXScreenState({ registerRef, children, landmarkRef
 				intervalCheckLayout = setInterval(() => {
 					landmarkRef.current?.measure((_, __, ___, ____, _____, pageY) => {
 						setIsReadyToMeasureDestinationComponents((prevState) => {
-							if (!prevState.firsHeaderHeightSaved) {
+							if (!prevState.firstHeaderHeightSaved) {
 								return {
-									firsHeaderHeightSaved: headerHeight,
+									firstHeaderHeightSaved: headerHeight,
 									isReady: false
 								}
 							}
-							if (pageY >= prevState.firsHeaderHeightSaved) {
+							if (pageY >= prevState.firstHeaderHeightSaved) {
 
 								return {
 									...prevState,

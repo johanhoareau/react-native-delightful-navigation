@@ -6,6 +6,7 @@ import type {
 	Route,
 } from "../types/types"
 import { useTransitionStore } from "../_core/stores/useTransitionStore"
+import { useAnimatedReaction, useSharedValue } from "react-native-reanimated"
 
 
 export const useDelightfulTransition = (route: Route) => {
@@ -13,6 +14,9 @@ export const useDelightfulTransition = (route: Route) => {
 		(state) => state.prepareBeforeNavigation
 	)
 
+	const transitionIsFinished = useSharedValue(false)
+	const origin = useSharedValue<Route | null>(null)
+	const destination = useSharedValue<Route | null>(null)
 
 	const registerRef = useRef<RegisterXData>({
 		route,
@@ -21,6 +25,9 @@ export const useDelightfulTransition = (route: Route) => {
 
 	const register = {
 		registerRef,
+		transitionIsFinished,
+		origin,
+		destination
 	}
 
 
@@ -78,6 +85,9 @@ export const useDelightfulTransition = (route: Route) => {
 
 	return {
 		register,
-		navigateWithTransition
+		navigateWithTransition,
+		transitionIsFinished,
+		origin,
+		destination
 	}
 }
