@@ -1,15 +1,14 @@
-import { StyleSheet, Text, View, type ViewProps } from 'react-native'
-import type { XData, XImageData, XTextData, XViewData } from '../../types/types'
+import type { MeasuredDimensionsComponent, XImageData, XTextData, XViewData } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'
-import { useTransitionProgress } from '../hooks/useTransitionProgress'
 import Animated from 'react-native-reanimated'
 import { useTransitionLayout } from '../hooks/useTransitionLayout'
 import { useTransitionBorderRadius } from '../hooks/useTransitionBorderRadius'
 import { useTransitionFont } from '../hooks/useTransitionFont'
+import { useTransitionProgress } from '../hooks/useTransitionProgress'
 
 type TemporaryViewProps = Omit<Required<XViewData>, "type">
-type TemporaryTextProps = Omit<XTextData, "type">
-type TemporaryImageProps = Omit<XImageData, "type">
+type TemporaryTextProps = Omit<XTextData, "type"> & Required<{ measure: MeasuredDimensionsComponent }>
+type TemporaryImageProps = Omit<XImageData, "type"> & Required<{ measure: MeasuredDimensionsComponent }>
 
 
 

@@ -1,4 +1,4 @@
-import { Extrapolation, interpolate, interpolateColor, useAnimatedStyle, useSharedValue, type SharedValue } from "react-native-reanimated"
+import { Extrapolation, interpolate, useAnimatedStyle, useSharedValue, type SharedValue } from "react-native-reanimated"
 import type { DestinationXData, Style } from "../../types/types"
 import { StyleSheet, type TextStyle } from "react-native"
 

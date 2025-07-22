@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect } from 'react'
 import type { ReactComponent, RegisterRef, Style, TransitionTag, XComponentType } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'
+import type { ImageURISource } from 'react-native'
 
 type HandlerXComponentStateProps = {
 	setOpacityDuringTransition: (opacity: { opacity?: number }) => void,
@@ -10,7 +10,7 @@ type HandlerXComponentStateProps = {
 	style: Style
 	type: XComponentType,
 	xComponentRef: React.RefObject<ReactComponent | null>
-	source?: number,
+	source?: number | ImageURISource | ImageURISource[],
 	text?: string
 }
 
@@ -151,5 +151,3 @@ export const HandlerXComponentState = ({
 		</>
 	)
 }
-
-const styles = StyleSheet.create({})

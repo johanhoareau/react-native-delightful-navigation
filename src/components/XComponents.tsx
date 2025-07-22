@@ -1,25 +1,17 @@
 import { Image, Text, View, type ImageProps, type TextProps, type ViewProps } from "react-native"
-import { useHandlerXComponent } from "../_core/hooks/useHandlerXComponent"
 import type { XComponentProps } from "../types/props"
 import { useRef, useState } from "react"
-import type { ReactComponent } from "../types/types"
 import { HandlerXComponentState } from "../_core/handlerState/HandlerXComponentState"
 
 type XViewProps = XComponentProps & ViewProps
 type XTextProps = XComponentProps & TextProps
 type XImageProps = XComponentProps & ImageProps
 
+
+
 export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => {
-	// const { xComponentRef, opacityDuringTransition } = useHandlerXComponent(
-	// 	registerRef,
-	// 	tag,
-	// 	style,
-	// 	"View"
-	// )
-	const xComponentRef = useRef<ReactComponent | null>(null)
+	const xComponentRef = useRef<View | null>(null)
 	const [opacityDuringTransition, setOpacityDuringTransition] = useState<{ opacity?: number } | null>(null)
-
-
 
 	return (
 		<>
@@ -43,10 +35,11 @@ export const XView = ({ registerRef, tag, style, ...restProps }: XViewProps) => 
 	)
 }
 
-export const XText = ({ registerRef, tag, style, ...restProps }: XTextProps) => {
-	const xComponentRef = useRef<ReactComponent | null>(null)
-	const [opacityDuringTransition, setOpacityDuringTransition] = useState<{ opacity?: number } | null>(null)
 
+
+export const XText = ({ registerRef, tag, style, ...restProps }: XTextProps) => {
+	const xComponentRef = useRef<Text | null>(null)
+	const [opacityDuringTransition, setOpacityDuringTransition] = useState<{ opacity?: number } | null>(null)
 
 	return (
 		<>
@@ -72,8 +65,10 @@ export const XText = ({ registerRef, tag, style, ...restProps }: XTextProps) => 
 	)
 }
 
+
+
 export const XImage = ({ registerRef, tag, style, ...restProps }: XImageProps) => {
-	const xComponentRef = useRef<ReactComponent | null>(null)
+	const xComponentRef = useRef<Image | null>(null)
 	const [opacityDuringTransition, setOpacityDuringTransition] = useState<{ opacity?: number } | null>(null)
 
 	return (

@@ -1,32 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { checkIfAllComponentsDataOriginAreSaved } from '../utils/checkIfAllComponentsDataOriginAreSaved'
-import type { XData } from '../../types/types'
 import { TemporaryImage, TemporaryText, TemporaryView } from './TemporaryTransitionComponents'
+import type { XData, XDataInProgress } from '../../types/types'
 
-
-type ItemProps = XData
-
-export const Item = ({ type, ...props }: ItemProps) => {
-
-	switch (type) {
-		case "View":
-			return (
-				<TemporaryView {...props} />
-			)
-		case "Text":
-			return (
-				<TemporaryText {...props} />
-			)
-		case "Image":
-			return (
-				<TemporaryImage {...props} />
-			)
-		default:
-			return null
-	}
-}
 
 export const DisplayerTemporaryComponents = () => {
 	const componentsForTransition = useTransitionStore(
@@ -36,7 +13,7 @@ export const DisplayerTemporaryComponents = () => {
 	const allComponentsDataOriginAreSaved: boolean = useTransitionStore(
 		(state) => {
 			const isAllSaved = checkIfAllComponentsDataOriginAreSaved(
-				state.origin?.xComponentsData
+				state.origin?.xComponentsData as XData[] | XDataInProgress[] | undefined
 			)
 			return isAllSaved
 		}
@@ -53,6 +30,7 @@ export const DisplayerTemporaryComponents = () => {
 		}
 		return isAllFinished
 	})
+
 
 	useEffect(() => {
 		if (allComponentsDataOriginAreSaved) {
@@ -83,18 +61,25 @@ export const DisplayerTemporaryComponents = () => {
 	return (
 		<>
 			{allComponentsDataOriginAreSaved ? (
-				componentsForTransition?.map((el, index) => (
-					<Item
-						key={index}
-						type={el.type}
-						parents={el.parents}
-						tag={el.tag}
-						measure={el.measure}
-						style={el.style}
-						text={el.type === "Text" ? el?.text : ""}
-						source={el.source}
-					/>
-				))
+				componentsForTransition?.map((el, index) => {
+					const props = { ...el } as XData
+					switch (props.type) {
+						case "View":
+							return (
+								<TemporaryView key={index} {...props} />
+							)
+						case "Text":
+							return (
+								<TemporaryText key={index} {...props} />
+							)
+						case "Image":
+							return (
+								<TemporaryImage key={index} {...props} />
+							)
+						default:
+							return null
+					}
+				})
 			) : null}
 		</>
 	)

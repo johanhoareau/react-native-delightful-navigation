@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import type { FlowManagerProps } from "../types/props"
 import { DisplayerTemporaryComponents } from "../_core/components/DisplayerTemporaryComponents"
 
@@ -10,5 +10,3 @@ export const FlowManager = ({ children }: FlowManagerProps) => {
 		</View>
 	)
 }
-
-const styles = StyleSheet.create({})

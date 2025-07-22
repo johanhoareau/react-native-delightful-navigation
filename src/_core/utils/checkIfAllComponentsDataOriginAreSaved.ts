@@ -1,7 +1,7 @@
-import type { InProgressXComponentData } from "../../types/types"
+import type { XData, XDataInProgress } from "../../types/types"
 
 export const checkIfAllComponentsDataOriginAreSaved = (
-	xComponentsData: InProgressXComponentData[] | undefined
+	xComponentsData: XData[] | XDataInProgress[] | undefined
 ) => {
 	const arrayOfIsDataSaved = xComponentsData?.map((el) => !!el.measure)
 	const hasLeastOneNotSaved = arrayOfIsDataSaved?.includes(false)

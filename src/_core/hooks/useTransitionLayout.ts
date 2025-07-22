@@ -1,7 +1,17 @@
 import { LinearTransition } from "react-native-reanimated"
 import { TRANSITION_DURATION, TRANSITION_EASING } from "../constants/transition"
+import type { DestinationXData, MeasuredDimensionsComponent, Style } from "../../types/types"
 
-export const useTransitionLayout = (style, measure, destinationData) => {
+type TransitionLayoutHook = (
+	style: Style,
+	measure: MeasuredDimensionsComponent,
+	destinationData?: DestinationXData
+) => {
+	handlerTransitionLayout: LinearTransition,
+	animatedLayoutTransition: Style[]
+}
+
+export const useTransitionLayout: TransitionLayoutHook = (style, measure, destinationData) => {
 	const handlerTransitionLayout = LinearTransition.duration(TRANSITION_DURATION).easing(TRANSITION_EASING)
 
 	const layoutStyle = !destinationData?.measure ?
@@ -19,7 +29,7 @@ export const useTransitionLayout = (style, measure, destinationData) => {
 
 
 	// TODO: verify properties to reset (e.g. margin, padding)
-	const animatedLayoutTransition = [
+	const animatedLayoutTransition: Style[] = [
 		style,
 		layoutStyle,
 		{

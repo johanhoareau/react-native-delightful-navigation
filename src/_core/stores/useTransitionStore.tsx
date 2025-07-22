@@ -19,7 +19,7 @@ type State = {
 	origin?: RegisterXData | InitialRegisterXData,
 	destination?: DestinationRegisterXData,
 	navigationCallback: NavigationCallback | null,
-	history: Pick<State, "origin" | "destination">[]
+	history: Required<Pick<State, "origin" | "destination">>[]
 }
 
 const initialState: State = {
@@ -138,6 +138,8 @@ export const useTransitionStore = create(
 			saveHistory: () => {
 				set(
 					produce((state: State) => {
+
+						if (state.origin && state.destination) {
 						const reinitializedDestinationForHistory = state.destination?.xComponentsData.map(el => ({
 							...el,
 							isTransitionFinished: false
@@ -153,6 +155,7 @@ export const useTransitionStore = create(
 							},
 							...state.history,
 						]
+						}
 					}))
 			},
 			resetState: () => {
