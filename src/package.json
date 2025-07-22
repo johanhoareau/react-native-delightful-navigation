@@ -1,0 +1,5 @@
+{
+    "name": "react-native-delightful-navigation",
+    "private": true,
+    "main": "./index.tsx"
+}
