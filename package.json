@@ -83,19 +83,18 @@
         "react-native-builder-bob": "^0.40.8",
         "react-native-reanimated": "3.17.5",
         "release-it": "^17.10.0",
-        "typescript": "^5.8.3",
-        "zustand": "4.5.7"
+        "typescript": "^5.8.3"
     },
     "dependencies": {
-        "immer": "^10.1.1"
+        "immer": "^10.1.1",
+        "zustand": "^4.5.7"
     },
     "peerDependencies": {
         "@react-navigation/native": "^7.1.6",
         "@react-navigation/native-stack": "^7.3.10",
         "react": "*",
         "react-native": "*",
-        "react-native-reanimated": "^3.17.5",
-        "zustand": ">=3.7.0 <5.0.0"
+        "react-native-reanimated": "^3.17.5"
     },
     "workspaces": [
         "example"
