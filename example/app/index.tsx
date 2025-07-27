@@ -1,4 +1,4 @@
-import { Button, FlatList, Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { FlatList, Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
 import {
 	useDelightfulTransition,
 	XImage,
@@ -7,32 +7,22 @@ import {
 	XView,
 } from "react-native-delightful-navigation"
 import { useRouter } from "expo-router"
-import { ELEMENTS, type ItemList } from "../constants"
+import { ELEMENTS } from "../constants"
+import { ItemText } from "../components/ItemText"
 
 export default function App() {
 	const router = useRouter()
-	const { register, navigateWithTransition, setRegisterList } = useDelightfulTransition("/")
+	const { register, navigateWithTransition, transitionIsFinished, origin } = useDelightfulTransition("/")
 
-
-	// const handleNavigation = () => {
-	// 	navigateWithTransition({
-	// 		destination: "/details",
-	// 		navigationCallback: () => {
-	// 			router.navigate("/details")
-	// 		},
-	// 		includes: ["text", "image"]
-	// 	})
-	// }
 
 	const handleNavigationToDetails = (id: number) => {
 		navigateWithTransition({
 			destination: `/details/${id}`,
-			navigationCallback: () => {
-				router.navigate(`/details/${id}`)
-			},
+			navigationCallback: () => router.navigate(`/details/${id}`),
 			itemsListToInclude: [
 				`container-${id}`,
 				`image-${id}`,
+				`text-container-${id}`,
 				`title-${id}`
 			]
 		})
@@ -40,64 +30,70 @@ export default function App() {
 
 
 	return (
-		<XScreen {...register}>
-			<View style={styles.container}>
-				<FlatList
-					data={ELEMENTS}
-					keyExtractor={(item) => item.id.toString()}
-					renderItem={({ item }) => {
-						return (
-							<TouchableOpacity onPress={() => handleNavigationToDetails(item.id)}>
-								<XView
-									{...register}
-									tag={`container-${item.id}`}
-									style={styles.item}
-								>
-									<XImage
+		<>
+			<XScreen {...register}>
+				<View style={styles.container}>
+					<FlatList
+						data={ELEMENTS}
+						keyExtractor={(item) => item.id.toString()}
+						renderItem={({ item }) => {
+							return (
+								<Pressable onPress={() => handleNavigationToDetails(item.id)}>
+									<XView
 										{...register}
-										tag={`image-${item.id}`}
-										source={item.image}
-										style={styles.image}
-									/>
-									<View style={{ flex: 1, gap: 5 }}>
-										<XText
+										tag={`container-${item.id}`}
+										style={styles.item}
+									>
+										<XImage
 											{...register}
-											tag={`title-${item.id}`}
-											style={styles.title}
-										>
-											{item.title}
-										</XText>
-										<Text>
-											Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae tenetur excepturi quidem provident sequi
-										</Text>
-									</View>
-								</XView>
-							</TouchableOpacity>
-						)
-					}}
-				/>
-			</View>
-		</XScreen>
+											tag={`image-${item.id}`}
+											source={item.image}
+											style={styles.image}
+										/>
+										<View style={{ flex: 1, gap: 5 }}>
+											<XView
+												{...register}
+												tag={`text-container-${item.id}`}
+												style={styles.textContainer}
+											>
+
+												<XText
+													{...register}
+													tag={`title-${item.id}`}
+													style={styles.title}
+												>
+													{item.title}
+												</XText>
+											</XView>
+											<ItemText
+												id={item.id}
+												origin={origin}
+												transitionIsFinished={transitionIsFinished}
+											/>
+										</View>
+									</XView>
+								</Pressable>
+							)
+						}}
+					/>
+				</View>
+			</XScreen>
+		</>
 	)
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		gap: 50,
-		// backgroundColor: '#307'
 	},
 	item: {
-		flex: 1,
-		// height: 75,
-		// borderWidth: 1,
 		borderRadius: 5,
-		borderColor: "#AAA",
+		backgroundColor: "white",
 		marginBottom: 25,
 		padding: 10,
 		flexDirection: "row",
 		gap: 20,
-		marginHorizontal: 10,
+		marginHorizontal: 30,
 		alignItems: 'center',
 	},
 	image: {
@@ -105,10 +101,16 @@ const styles = StyleSheet.create({
 		width: 75,
 		borderRadius: 75
 	},
+	textContainer: {
+		backgroundColor: "#338",
+		alignSelf: 'flex-start',
+		paddingHorizontal: 10,
+		borderRadius: 5,
+	},
 	title: {
-		fontSize: 18,
-		fontWeight: "400",
-		// color: "#000"
+		fontSize: 16,
+		fontWeight: "500",
+		color: "#fff",
 	}
 
 })

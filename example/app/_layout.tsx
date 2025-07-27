@@ -5,7 +5,7 @@ export default function RootLayout() {
 	return (
 		<FlowManager>
 			<Stack
-				screenOptions={{ headerShown: false }}
+			// screenOptions={{ headerShown: false }}
 			/>
 		</FlowManager>
 	)

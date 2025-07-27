@@ -12,10 +12,15 @@ export const DisplayerTemporaryComponents = () => {
 	const transitionIsEnded = useTransitionStore(state => state.status === "end transition")
 	const allComponentsDataOriginAreSaved: boolean = useTransitionStore(
 		(state) => {
+			// FIXME: handle transition when itemsListToInclude is empty array
+			// if (state.origin?.xComponentsData && state.origin?.xComponentsData.length < 1) {
+			// 	return true
+			// } else {
 			const isAllSaved = checkIfAllComponentsDataOriginAreSaved(
 				state.origin?.xComponentsData as XData[] | XDataInProgress[] | undefined
 			)
 			return isAllSaved
+			// }
 		}
 	)
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
