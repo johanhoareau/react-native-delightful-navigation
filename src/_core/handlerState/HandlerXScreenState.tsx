@@ -95,13 +95,16 @@ export default function HandlerXScreenState({ registerRef, transitionIsFinished,
 				intervalCheckLayout = setInterval(() => {
 					landmarkRef.current?.measure((_, __, ___, ____, _____, pageY) => {
 						setIsReadyToMeasureDestinationComponents((prevState) => {
+							const roundedPageY = Math.round(pageY)
+							const roundedHeaderHeight = Math.round(headerHeight)
+
 							if (!prevState.firstHeaderHeightSaved) {
 								return {
-									firstHeaderHeightSaved: headerHeight,
+									firstHeaderHeightSaved: roundedHeaderHeight,
 									isReady: false
 								}
 							}
-							if (pageY >= prevState.firstHeaderHeightSaved) {
+							if (roundedPageY >= prevState.firstHeaderHeightSaved - 1) {
 
 								return {
 									...prevState,
