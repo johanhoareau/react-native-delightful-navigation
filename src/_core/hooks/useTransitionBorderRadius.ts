@@ -11,7 +11,7 @@ export const useTransitionBorderRadius = (
 	const destinationFlatStyle = StyleSheet.flatten<ViewStyle>(destinationData?.style)
 
 
-	const borderRadius = useSharedValue(originFlatStyle.borderRadius ? originFlatStyle.borderRadius : 0)
+	const borderRadius = useSharedValue(originFlatStyle?.borderRadius ? originFlatStyle.borderRadius : 0)
 
 	const animatedBorderRadius = useAnimatedStyle(() => {
 

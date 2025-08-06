@@ -23,6 +23,7 @@ export const DisplayerTemporaryComponents = () => {
 			// }
 		}
 	)
+	const isStatusOff = useTransitionStore(state => state.status === "off")
 	const setStatusTransition = useTransitionStore(state => state.setStatus)
 	const saveHistory = useTransitionStore(state => state.saveHistory)
 	const resetTransitionStore = useTransitionStore(state => state.resetState)
@@ -38,7 +39,7 @@ export const DisplayerTemporaryComponents = () => {
 
 
 	useEffect(() => {
-		if (allComponentsDataOriginAreSaved) {
+		if (allComponentsDataOriginAreSaved && isStatusOff) {
 			console.log("navigate");
 
 			setStatusTransition("navigation")

@@ -13,7 +13,7 @@ export const useTransitionFont = (
 	const originFlatStyle = StyleSheet.flatten<TextStyle>(originStyle)
 	const destinationFlatStyle = StyleSheet.flatten<TextStyle>(destinationData?.style)
 
-	const fontSize = useSharedValue(originFlatStyle.fontSize ? originFlatStyle.fontSize : DEFAULT_FONT_SIZE)
+	const fontSize = useSharedValue(originFlatStyle?.fontSize ? originFlatStyle.fontSize : DEFAULT_FONT_SIZE)
 	const animatedFont = useAnimatedStyle(() => {
 		const fontSizeStart = originFlatStyle?.fontSize ? originFlatStyle.fontSize : DEFAULT_FONT_SIZE
 		const fontSizeEnd = destinationFlatStyle?.fontSize ? destinationFlatStyle.fontSize : DEFAULT_FONT_SIZE
