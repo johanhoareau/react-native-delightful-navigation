@@ -19,6 +19,10 @@ type State = {
 	origin?: RegisterXData | InitialRegisterXData,
 	destination?: DestinationRegisterXData,
 	navigationCallback: NavigationCallback | null,
+	indexBackTransitionIntoHistory: number | null,
+	hasDifferencePosYDetected: {
+		difference: number
+	} | null,
 	history: Required<Pick<State, "origin" | "destination">>[]
 }
 
@@ -27,6 +31,8 @@ const initialState: State = {
 	origin: undefined,
 	destination: undefined,
 	navigationCallback: null,
+	indexBackTransitionIntoHistory: null,
+	hasDifferencePosYDetected: null,
 	history: []
 }
 
@@ -57,9 +63,23 @@ export const useTransitionStore = create(
 				set(
 					produce((state: State) => {
 						if (!state.origin && !state.destination) {
-							const transitionDataForBack = state.history.find(data => (
-								data.origin.route === routeBack && data.destination.route === currentRoute
-							))
+
+							const transitionDataForBack = state.history.find(data => {
+								// console.log("routeBack", routeBack, data.origin.route);
+								return (
+									data.origin.route === routeBack && data.destination.route === currentRoute
+								)
+							})
+							const indexTransitionDataForBack = state.history.findIndex(data => {
+								// console.log("routeBack", routeBack, data.origin.route);
+								return (
+									data.origin.route === routeBack && data.destination.route === currentRoute
+								)
+							})
+
+							console.log(JSON.stringify(transitionDataForBack, null, 2));
+
+
 
 							if (transitionDataForBack) {
 								state.origin = {
@@ -67,7 +87,7 @@ export const useTransitionStore = create(
 									xComponentsData: transitionDataForBack.destination.xComponentsData.map(el => {
 										return {
 											tag: el.tag,
-											parents: ["List"]
+											parents: []
 										}
 									})
 
@@ -76,6 +96,8 @@ export const useTransitionStore = create(
 									route: transitionDataForBack.origin.route,
 									xComponentsData: []
 								}
+								state.indexBackTransitionIntoHistory = indexTransitionDataForBack !== -1 ? indexTransitionDataForBack : null
+								// state.status = "navigation"
 							} else {
 								console.log("navigation without transition");
 								state.status = "navigation without transition"
@@ -86,6 +108,7 @@ export const useTransitionStore = create(
 							}
 						}
 						state.navigationCallback = navigationCallback
+						// console.log(JSON.stringify(state, null, 2));
 					})
 				)
 			},
@@ -130,6 +153,33 @@ export const useTransitionStore = create(
 					})
 				)
 			},
+			addBackDestinationComponentData: (tag: TransitionTag) => {
+				set(
+					produce((state: State) => {
+						if (!state.destination) {
+							throw new Error("Destination is not initialized")
+						}
+						const isAlreadyAdd = state.destination.xComponentsData.find(
+							(el: Omit<InitialXData, "parents">) => el.tag === tag
+						)
+						if (!isAlreadyAdd && state.indexBackTransitionIntoHistory !== null) {
+							const componentData = state.history[state.indexBackTransitionIntoHistory]?.origin.xComponentsData
+								.map(el => ({
+									...el,
+									isTransitionFinished: false
+								})) as XDataToAddToDestination[]
+
+							state.destination.xComponentsData = [
+								...state.destination.xComponentsData,
+								...componentData,
+							]
+						}
+					})
+				)
+			},
+			setHasDifferencePosYDetected: (difference: number) => {
+				set({ hasDifferencePosYDetected: { difference } })
+			},
 			setTransitionComponentIsFinished: (tag: TransitionTag) => {
 				set(
 					produce((state: State) => {
@@ -152,21 +202,17 @@ export const useTransitionStore = create(
 					produce((state: State) => {
 
 						if (state.origin && state.destination) {
-							const reinitializedDestinationForHistory = state.destination?.xComponentsData.map(el => ({
-								...el,
-								isTransitionFinished: false
-							}))
-
-							state.history = [
-								{
-									origin: state.origin,
-									destination: {
-										route: state.destination.route,
-										xComponentsData: reinitializedDestinationForHistory
+							if (state.indexBackTransitionIntoHistory === null) {
+								state.history = [
+									{
+										origin: state.origin,
+										destination: state.destination,
 									},
-								},
-								...state.history,
-							]
+									...state.history,
+								]
+							} else {
+								state.history.splice(state.indexBackTransitionIntoHistory)
+							}
 						}
 					}))
 			},
