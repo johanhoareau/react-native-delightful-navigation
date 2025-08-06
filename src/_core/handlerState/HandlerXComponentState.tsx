@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import type { ReactComponent, RegisterRef, Style, TransitionTag, XComponentType } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import type { ImageURISource } from 'react-native'
@@ -41,7 +41,16 @@ export const HandlerXComponentState = ({
 	const addDestinationComponentData = useTransitionStore(
 		(state) => state.addDestinationComponentData
 	)
-
+	const hasDifferencePosYDetected = useTransitionStore(
+		(state) => state.hasDifferencePosYDetected
+	)
+	const indexBackTransitionIntoHistory = useTransitionStore(
+		(state) => state.indexBackTransitionIntoHistory
+	)
+	const addBackDestinationComponentData = useTransitionStore(
+		(state) => state.addBackDestinationComponentData
+	)
+	const [hasDetectionPositionYProblem, setHasDetectionPositionYProblem] = useState<{ difference: number } | null>(null)
 
 
 	useEffect(() => {
@@ -66,7 +75,10 @@ export const HandlerXComponentState = ({
 					height,
 					width,
 					x: pageX,
-					y: pageY,
+					y: hasDetectionPositionYProblem
+						? pageY + hasDetectionPositionYProblem.difference
+						: pageY
+					,
 				}
 
 				if (type === "View") {
@@ -116,23 +128,32 @@ export const HandlerXComponentState = ({
 			transitionDestinationRoute === registerRef.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && statusTransition === "start transition") {
+			if (indexBackTransitionIntoHistory !== null) {
+				console.log("BACK TEST");
 
-			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
-				const measurement = {
-					height,
-					width,
-					x: pageX,
-					y: pageY,
-				}
+				addBackDestinationComponentData(tag)
+			} else {
+				xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
+					const measurement = {
+						height,
+						width,
+						x: pageX,
+						y: hasDifferencePosYDetected
+							? pageY + hasDifferencePosYDetected.difference
+							: pageY
+						,
+					}
 
-				addDestinationComponentData({
-					tag,
-					type,
-					style,
-					measure: measurement,
-					isTransitionFinished: false
+					addDestinationComponentData({
+						tag,
+						type,
+						style,
+						measure: measurement,
+						isTransitionFinished: false
+					})
+					hasDifferencePosYDetected && setHasDetectionPositionYProblem({ difference: hasDifferencePosYDetected.difference })
 				})
-			})
+			}
 		}
 	}, [
 		addDestinationComponentData,

@@ -1,9 +1,9 @@
-import { useRef, type PropsWithChildren } from "react"
-import { View } from "react-native"
+import { type PropsWithChildren } from "react"
 import type { RegisterRef, Route } from "../types/types"
-import Animated, { type SharedValue } from "react-native-reanimated";
+import Animated, { useAnimatedRef, type SharedValue } from "react-native-reanimated";
 import HandlerXScreenState from "../_core/handlerState/HandlerXScreenState";
 import type { NavigationProp, NavigationState } from "@react-navigation/native";
+import { View, type ViewProps } from "react-native";
 
 type XScreenProps = {
 	registerRef: RegisterRef,
@@ -11,27 +11,36 @@ type XScreenProps = {
 	navigation: Omit<NavigationProp<ReactNavigation.RootParamList>, "getState"> & {
 		getState(): NavigationState | undefined;
 	}
-	origin: SharedValue<Route | null>,
-	destination: SharedValue<Route | null>
-} & PropsWithChildren
+	origin: SharedValue<Route | null>
+} & ViewProps & PropsWithChildren
 
-export const XScreen = ({ registerRef, transitionIsFinished, origin, destination, children, navigation }: XScreenProps) => {
+export const XScreen = ({ registerRef, transitionIsFinished, origin, children, navigation, ...props }: XScreenProps) => {
 
-	const landmarkRef = useRef<View | null>(null)
+	const landmarkRef = useAnimatedRef()
 
 	return (
 		<>
-			<HandlerXScreenState
-				children={children}
-				registerRef={registerRef}
-				origin={origin}
-				destination={destination}
-				landmarkRef={landmarkRef}
-				navigation={navigation}
-				transitionIsFinished={transitionIsFinished}
+			<Animated.View
+				ref={landmarkRef}
+				style={{
+					position: "absolute",
+					top: 0,
+					borderWidth: 1,
+					backgroundColor: 'green'
+
+				}}
 			/>
-			<Animated.View ref={landmarkRef} />
-			{children}
+			<View {...props} style={[props.style, { flex: 1 }]}>
+				<HandlerXScreenState
+					children={children}
+					registerRef={registerRef}
+					origin={origin}
+					landmarkRef={landmarkRef}
+					navigation={navigation}
+					transitionIsFinished={transitionIsFinished}
+				/>
+				{children}
+			</View>
 		</>
 	)
 }
