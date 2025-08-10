@@ -25,8 +25,8 @@ export const XScreen = ({ registerRef, transitionIsFinished, origin, children, n
 				style={{
 					position: "absolute",
 					top: 0,
-					borderWidth: 1,
-					backgroundColor: 'green'
+					left: 0
+					// borderWidth: 4,
 
 				}}
 			/>

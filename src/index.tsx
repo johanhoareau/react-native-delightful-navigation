@@ -1,4 +1,4 @@
 export { FlowManager } from "./components/FlowManager"
-export { XScreen } from "./components/XScreen"
-export { XView, XText, XImage } from "./components/XComponents"
+export { XScreen as Screen } from "./components/XScreen"
+export { XView as SharedView, XText as SharedText, XImage as SharedImage } from "./components/XComponents"
 export { useDelightfulTransition } from "./hooks/useDelightfulTransition"
