@@ -7,12 +7,15 @@ import type {
 	NavigationCallback,
 	RegisterXData,
 	Route,
+	TransitionOptions,
 	TransitionStatus,
 	TransitionTag,
 	XDataToAddToDestination,
 	XDataToAddToOrigin,
 } from "../../types/types"
 import { produce } from "immer"
+import { Easing } from "react-native-reanimated"
+
 
 type State = {
 	status: TransitionStatus,
@@ -23,7 +26,8 @@ type State = {
 	hasDifferencePosYDetected: {
 		difference: number
 	} | null,
-	history: Required<Pick<State, "origin" | "destination">>[]
+	options: Required<TransitionOptions>
+	history: Required<Pick<State, "origin" | "destination" | "options">>[]
 }
 
 const initialState: State = {
@@ -33,6 +37,10 @@ const initialState: State = {
 	navigationCallback: null,
 	indexBackTransitionIntoHistory: null,
 	hasDifferencePosYDetected: null,
+	options: {
+		duration: 500,
+		easing: Easing.inOut(Easing.quad)
+	},
 	history: []
 }
 
@@ -47,7 +55,8 @@ export const useTransitionStore = create(
 			prepareBeforeNavigation: (
 				newOrigin: InitialRegisterXData,
 				newDestinationRoute: Route,
-				navigationCallback: NavigationCallback
+				navigationCallback: NavigationCallback,
+				options?: TransitionOptions
 			) => {
 				set(
 					produce((state: State) => {
@@ -55,6 +64,9 @@ export const useTransitionStore = create(
 							state.origin = newOrigin
 							state.destination = { route: newDestinationRoute, xComponentsData: [] }
 							state.navigationCallback = navigationCallback
+							if (options) {
+								state.options = { ...state.options, ...options }
+							}
 						}
 					})
 				)
@@ -96,6 +108,7 @@ export const useTransitionStore = create(
 									route: transitionDataForBack.origin.route,
 									xComponentsData: []
 								}
+								state.options = transitionDataForBack.options
 								state.indexBackTransitionIntoHistory = indexTransitionDataForBack !== -1 ? indexTransitionDataForBack : null
 								// state.status = "navigation"
 							} else {
@@ -207,6 +220,7 @@ export const useTransitionStore = create(
 									{
 										origin: state.origin,
 										destination: state.destination,
+										options: state.options
 									},
 									...state.history,
 								]

@@ -1,6 +1,7 @@
 import { LinearTransition } from "react-native-reanimated"
 import { TRANSITION_DURATION, TRANSITION_EASING } from "../constants/transition"
 import type { DestinationXData, MeasuredDimensionsComponent, Style } from "../../types/types"
+import { useTransitionStore } from "../stores/useTransitionStore"
 
 type TransitionLayoutHook = (
 	style: Style,
@@ -12,7 +13,8 @@ type TransitionLayoutHook = (
 }
 
 export const useTransitionLayout: TransitionLayoutHook = (style, measure, destinationData) => {
-	const handlerTransitionLayout = LinearTransition.duration(TRANSITION_DURATION).easing(TRANSITION_EASING)
+	const options = useTransitionStore(state => state.options)
+	const handlerTransitionLayout = LinearTransition.duration(options.duration).easing(options.easing)
 
 	const layoutStyle = !destinationData?.measure ?
 		{

@@ -77,7 +77,8 @@ export const useDelightfulTransition = (route: Route) => {
 				xComponentsData: newData
 			},
 			arg.destination,
-			arg.navigationCallback
+			arg.navigationCallback,
+			arg.options ? arg.options : undefined
 		)
 	}
 

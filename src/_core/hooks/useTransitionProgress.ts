@@ -1,7 +1,6 @@
 import { useEffect } from "react"
 import { runOnJS, useSharedValue, withTiming, type SharedValue } from "react-native-reanimated"
 import { useTransitionStore } from "../stores/useTransitionStore"
-import { TRANSITION_DURATION, TRANSITION_EASING } from "../constants/transition"
 import type { DestinationXData, TransitionTag } from "../../types/types"
 
 type TransitionProgressHook = (
@@ -12,6 +11,7 @@ type TransitionProgressHook = (
 }
 
 export const useTransitionProgress: TransitionProgressHook = (tag, destinationData) => {
+	const options = useTransitionStore(state => state.options)
 	const setTransitionComponentIsFinished = useTransitionStore(state => state.setTransitionComponentIsFinished)
 	const progress = useSharedValue(0)
 
@@ -20,8 +20,8 @@ export const useTransitionProgress: TransitionProgressHook = (tag, destinationDa
 
 			progress.value = withTiming(1,
 				{
-					duration: TRANSITION_DURATION,
-					easing: TRANSITION_EASING
+					duration: options.duration,
+					easing: options.easing
 				},
 				(finished) => {
 					if (finished) runOnJS(setTransitionComponentIsFinished)(tag)
