@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import React, { type PropsWithChildren } from "react"
 import type { InitialXData, TransitionTag } from "../../types/types"
 

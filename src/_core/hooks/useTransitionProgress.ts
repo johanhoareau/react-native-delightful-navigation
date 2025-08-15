@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { useEffect } from "react"
 import { runOnJS, useSharedValue, withTiming, type SharedValue } from "react-native-reanimated"
 import { useTransitionStore } from "../stores/useTransitionStore"

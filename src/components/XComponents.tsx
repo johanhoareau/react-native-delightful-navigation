@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { Image, Text, View, type ImageProps, type TextProps, type ViewProps } from "react-native"
 import type { XComponentProps } from "../types/props"
 import { useRef, useState } from "react"

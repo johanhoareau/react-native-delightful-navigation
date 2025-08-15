@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { useEffect } from "react";
 import { useHeaderHeight } from '@react-navigation/elements';
 import { useTransitionStore } from "../stores/useTransitionStore";

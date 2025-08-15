@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { type PropsWithChildren } from "react"
 import type { RegisterRef, Route } from "../types/types"
 import Animated, { useAnimatedRef, type SharedValue } from "react-native-reanimated";

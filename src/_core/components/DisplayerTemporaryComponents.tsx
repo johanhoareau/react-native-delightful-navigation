@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { useEffect } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import { checkIfAllComponentsDataOriginAreSaved } from '../utils/checkIfAllComponentsDataOriginAreSaved'

@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import React, { useEffect, useState } from 'react'
 import type { ReactComponent, RegisterRef, Style, TransitionTag, XComponentType } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'

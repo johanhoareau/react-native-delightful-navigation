@@ -1,6 +1,12 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
 const path = require("path")
 const { getDefaultConfig } = require("@expo/metro-config")
-const exclusionList = require('metro-config/src/defaults/exclusionList');
+const exclusionList = require("metro-config/src/defaults/exclusionList")
 const { withMetroConfig } = require("react-native-monorepo-config")
 const {
     wrapWithReanimatedMetroConfig,
@@ -24,15 +30,18 @@ config.resolver.unstable_enablePackageExports = true
 config.watchFolders = [root]
 
 config.resolver.extraNodeModules = {
-    'react-native-delightful-navigation': path.resolve(root, 'src'),
-    'react-native': path.resolve(root, 'node_modules/react-native'),
-    'react-native-reanimated': path.resolve(root, 'node_modules/react-native-reanimated')
-        // react: path.resolve(root, 'node_modules/react'),
+    "react-native-delightful-navigation": path.resolve(root, "src"),
+    "react-native": path.resolve(root, "node_modules/react-native"),
+    "react-native-reanimated": path.resolve(
+        root,
+        "node_modules/react-native-reanimated"
+    ),
+    // react: path.resolve(root, 'node_modules/react'),
 }
 
 config.resolver.blacklistRE = exclusionList([
     /react-native-delightful-navigation\/lib\/.*/,
     /react-native-delightful-navigation\/node_modules\/react-native-reanimated\/.*/,
-]);
+])
 
 module.exports = wrapWithReanimatedMetroConfig(config)

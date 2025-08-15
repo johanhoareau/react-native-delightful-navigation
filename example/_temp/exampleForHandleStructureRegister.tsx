@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { Button, StyleSheet, Text, View } from "react-native"
 import React, { useState } from "react"
 import {

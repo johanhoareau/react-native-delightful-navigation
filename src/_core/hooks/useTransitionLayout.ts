@@ -1,5 +1,11 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import { LinearTransition } from "react-native-reanimated"
-import { TRANSITION_DURATION, TRANSITION_EASING } from "../constants/transition"
 import type { DestinationXData, MeasuredDimensionsComponent, Style } from "../../types/types"
 import { useTransitionStore } from "../stores/useTransitionStore"
 

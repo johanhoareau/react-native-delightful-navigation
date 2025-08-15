@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import type { XData, XDataInProgress } from "../../types/types"
 
 export const checkIfAllComponentsDataOriginAreSaved = (

@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import React, { useEffect, type PropsWithChildren } from 'react'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import type { InitialXData, RegisterRef, Route } from '../../types/types';

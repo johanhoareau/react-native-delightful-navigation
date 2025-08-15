@@ -1,3 +1,9 @@
+<!--
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ -->
+
 # Contributing
 
 Contributions are always welcome, no matter how large or small!

@@ -1,3 +1,10 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
 import type { MeasuredDimensionsComponent, XImageData, XTextData, XViewData } from '../../types/types'
 import { useTransitionStore } from '../stores/useTransitionStore'
 import Animated from 'react-native-reanimated'

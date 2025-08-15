@@ -1,9 +1,15 @@
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
 const path = require("path")
 const { getConfig } = require("react-native-builder-bob/babel-config")
 const pkg = require("../package.json")
 
 const root = path.resolve(__dirname, "..")
-console.log('[BABEL] Transpiling:', __filename);
+console.log("[BABEL] Transpiling:", __filename)
 
 module.exports = function(api) {
     api.cache(true)

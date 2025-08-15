@@ -1,3 +1,11 @@
+<!--
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ -->
+
+
+
 # react-native-delightful-navigation
 
 A library to create smooth and delightful animated transitions between screen
@@ -26,7 +34,7 @@ See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the 
 
 ## License
 
-MIT
+MIT © Johan Hoareau. See [license](LICENSE.md) for details.
 
 ---
 
