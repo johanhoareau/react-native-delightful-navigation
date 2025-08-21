@@ -70,7 +70,7 @@ export type DestinationRegisterXData = {
 
 export type NavigationCallback = () => void
 
-export type TransitionOptions = {
+export type TransitionConfig = {
 	duration?: number,
 	easing?: (t: number) => number
 }
@@ -81,5 +81,5 @@ export type NavigateWithTransitionArg = {
 	includes?: TransitionTag[],
 	excludes?: TransitionTag[],
 	itemsListToInclude?: TransitionTag[],
-	options?: TransitionOptions
+	config?: TransitionConfig
 }

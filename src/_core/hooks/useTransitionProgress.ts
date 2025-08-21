@@ -18,7 +18,7 @@ type TransitionProgressHook = (
 }
 
 export const useTransitionProgress: TransitionProgressHook = (tag, destinationData) => {
-	const options = useTransitionStore(state => state.options)
+	const config = useTransitionStore(state => state.config)
 	const setTransitionComponentIsFinished = useTransitionStore(state => state.setTransitionComponentIsFinished)
 	const progress = useSharedValue(0)
 
@@ -27,8 +27,8 @@ export const useTransitionProgress: TransitionProgressHook = (tag, destinationDa
 
 			progress.value = withTiming(1,
 				{
-					duration: options.duration,
-					easing: options.easing
+					duration: config.duration,
+					easing: config.easing
 				},
 				(finished) => {
 					if (finished) runOnJS(setTransitionComponentIsFinished)(tag)

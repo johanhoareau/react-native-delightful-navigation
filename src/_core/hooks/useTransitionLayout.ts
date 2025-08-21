@@ -19,8 +19,8 @@ type TransitionLayoutHook = (
 }
 
 export const useTransitionLayout: TransitionLayoutHook = (style, measure, destinationData) => {
-	const options = useTransitionStore(state => state.options)
-	const handlerTransitionLayout = LinearTransition.duration(options.duration).easing(options.easing)
+	const config = useTransitionStore(state => state.config)
+	const handlerTransitionLayout = LinearTransition.duration(config.duration).easing(config.easing)
 
 	const layoutStyle = !destinationData?.measure ?
 		{

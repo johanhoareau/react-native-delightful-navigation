@@ -14,7 +14,7 @@ import type {
 	NavigationCallback,
 	RegisterXData,
 	Route,
-	TransitionOptions,
+	TransitionConfig,
 	TransitionStatus,
 	TransitionTag,
 	XDataToAddToDestination,
@@ -33,8 +33,8 @@ type State = {
 	hasDifferencePosYDetected: {
 		difference: number
 	} | null,
-	options: Required<TransitionOptions>
-	history: Required<Pick<State, "origin" | "destination" | "options">>[]
+	config: Required<TransitionConfig>
+	history: Required<Pick<State, "origin" | "destination" | "config">>[]
 }
 
 const initialState: State = {
@@ -44,7 +44,7 @@ const initialState: State = {
 	navigationCallback: null,
 	indexBackTransitionIntoHistory: null,
 	hasDifferencePosYDetected: null,
-	options: {
+	config: {
 		duration: 500,
 		easing: Easing.inOut(Easing.quad)
 	},
@@ -63,7 +63,7 @@ export const useTransitionStore = create(
 				newOrigin: InitialRegisterXData,
 				newDestinationRoute: Route,
 				navigationCallback: NavigationCallback,
-				options?: TransitionOptions
+				config?: TransitionConfig
 			) => {
 				set(
 					produce((state: State) => {
@@ -71,8 +71,8 @@ export const useTransitionStore = create(
 							state.origin = newOrigin
 							state.destination = { route: newDestinationRoute, xComponentsData: [] }
 							state.navigationCallback = navigationCallback
-							if (options) {
-								state.options = { ...state.options, ...options }
+							if (config) {
+								state.config = { ...state.config, ...config }
 							}
 						}
 					})
@@ -115,7 +115,7 @@ export const useTransitionStore = create(
 									route: transitionDataForBack.origin.route,
 									xComponentsData: []
 								}
-								state.options = transitionDataForBack.options
+								state.config = transitionDataForBack.config
 								state.indexBackTransitionIntoHistory = indexTransitionDataForBack !== -1 ? indexTransitionDataForBack : null
 								// state.status = "navigation"
 							} else {
@@ -227,7 +227,7 @@ export const useTransitionStore = create(
 									{
 										origin: state.origin,
 										destination: state.destination,
-										options: state.options
+										config: state.config
 									},
 									...state.history,
 								]
