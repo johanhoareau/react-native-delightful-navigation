@@ -138,10 +138,10 @@
         },
         "hooks": {
             "before:init": [
+                "verify-headers",
                 "yarn typecheck",
                 "yarn lint",
-                "yarn test",
-                "verify-headers"
+                "yarn test"
             ]
         },
         "npm": {

@@ -4,7 +4,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-
 import { useRef } from "react"
 import type {
 	InitialXData,
@@ -14,7 +13,6 @@ import type {
 } from "../types/types"
 import { useTransitionStore } from "../_core/stores/useTransitionStore"
 import { useSharedValue } from "react-native-reanimated"
-
 
 export const useDelightfulTransition = (route: Route) => {
 	const prepareBeforeNavigation = useTransitionStore(
@@ -32,9 +30,8 @@ export const useDelightfulTransition = (route: Route) => {
 	const register = {
 		registerRef,
 		transitionIsFinished,
-		origin
+		origin,
 	}
-
 
 	// FIXME: handle double click
 	const navigateWithTransition = (arg: NavigateWithTransitionArg) => {
@@ -44,20 +41,19 @@ export const useDelightfulTransition = (route: Route) => {
 
 		let newData: InitialXData[] = []
 		if (arg.includes && arg.includes?.length > 0) {
-			arg.includes.forEach(tag => {
-				const dataFund = tempData.filter(el => el.tag === tag)
+			arg.includes.forEach((tag) => {
+				const dataFund = tempData.filter((el) => el.tag === tag)
 				if (dataFund) {
 					newData = [...newData, ...dataFund]
 				}
 			})
 		} else if (arg.excludes && arg.excludes?.length > 0) {
 			let dataFiltered = [...tempData]
-			arg.excludes.forEach(tag => {
-				dataFiltered = dataFiltered.filter(el => el.tag !== tag)
+			arg.excludes.forEach((tag) => {
+				dataFiltered = dataFiltered.filter((el) => el.tag !== tag)
 			})
 			newData = [...dataFiltered]
 		} else {
-
 			newData = [...tempData]
 		}
 
@@ -65,23 +61,21 @@ export const useDelightfulTransition = (route: Route) => {
 			if (newData.length === tempData.length) {
 				newData = []
 			}
-			arg.itemsListToInclude.forEach(tag => {
+			arg.itemsListToInclude.forEach((tag) => {
 				newData = [
 					...newData,
 					{
 						tag,
-						parents: ["List"]
-					}
+						parents: ["List"],
+					},
 				]
 			})
 		}
 
-
-
 		prepareBeforeNavigation(
 			{
 				route: registerRef.current.route,
-				xComponentsData: newData
+				xComponentsData: newData,
 			},
 			arg.destination,
 			arg.navigationCallback,
