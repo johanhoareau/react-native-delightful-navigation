@@ -38,10 +38,6 @@ A library to create smooth and delightful animated transitions between screens
 ```sh
 npm install react-native-delightful-navigation
 ```
-or
-```sh
-yarn add react-native-delightful-navigation
-```
 
 ## Setup
 

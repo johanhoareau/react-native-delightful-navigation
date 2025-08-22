@@ -1,116 +1,87 @@
-import { FlatList, Pressable, StyleSheet, TouchableOpacity, View } from "react-native"
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
+
+
+import { Pressable, StyleSheet } from "react-native"
 import {
 	useDelightfulTransition,
-	XImage,
-	XScreen,
-	XText,
-	XView,
+	Screen,
+	SharedText,
+	SharedView,
 } from "react-native-delightful-navigation"
-import { useRouter } from "expo-router"
-import { ELEMENTS } from "../constants"
-import { ItemText } from "../components/ItemText"
+import { useNavigation, useRouter } from "expo-router"
+import NavigationListButton from "../components/NavigationListButton"
 
-export default function App() {
+const Home = () => {
+	const { register, navigateWithTransition, transitionIsFinished, origin } =
+		useDelightfulTransition("/")
+
+	const navigation = useNavigation()
 	const router = useRouter()
-	const { register, navigateWithTransition, transitionIsFinished, origin } = useDelightfulTransition("/")
 
-
-	const handleNavigationToDetails = (id: number) => {
+	const handlePress = () => {
 		navigateWithTransition({
-			destination: `/details/${id}`,
-			navigationCallback: () => router.navigate(`/details/${id}`),
-			itemsListToInclude: [
-				`container-${id}`,
-				`image-${id}`,
-				`text-container-${id}`,
-				`title-${id}`
-			]
+			destination: "/basic",
+			navigationCallback: () => router.navigate("/basic"),
+			config: { duration: 750 },
 		})
 	}
 
-
 	return (
-		<>
-			<XScreen {...register}>
-				<View style={styles.container}>
-					<FlatList
-						data={ELEMENTS}
-						keyExtractor={(item) => item.id.toString()}
-						renderItem={({ item }) => {
-							return (
-								<Pressable onPress={() => handleNavigationToDetails(item.id)}>
-									<XView
-										{...register}
-										tag={`container-${item.id}`}
-										style={styles.item}
-									>
-										<XImage
-											{...register}
-											tag={`image-${item.id}`}
-											source={item.image}
-											style={styles.image}
-										/>
-										<View style={{ flex: 1, gap: 5 }}>
-											<XView
-												{...register}
-												tag={`text-container-${item.id}`}
-												style={styles.textContainer}
-											>
-
-												<XText
-													{...register}
-													tag={`title-${item.id}`}
-													style={styles.title}
-												>
-													{item.title}
-												</XText>
-											</XView>
-											<ItemText
-												id={item.id}
-												origin={origin}
-												transitionIsFinished={transitionIsFinished}
-											/>
-										</View>
-									</XView>
-								</Pressable>
-							)
-						}}
-					/>
-				</View>
-			</XScreen>
-		</>
+		<Screen
+			{...register}
+			navigation={navigation}
+			style={styles.container}
+		>
+			<Pressable onPress={handlePress}>
+				<SharedView
+					{...register}
+					tag="button-container"
+					style={styles.buttonBasic}
+				>
+					<SharedText
+						{...register}
+						tag="button-text"
+						style={styles.buttonBasicText}
+					>
+						Basic navigation
+					</SharedText>
+				</SharedView>
+			</Pressable>
+			<NavigationListButton
+				title="Navigation with list"
+				route="/with-list"
+				transitionIsFinished={transitionIsFinished}
+				origin={origin}
+			/>
+		</Screen>
 	)
 }
+
+export default Home
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		gap: 50,
 	},
-	item: {
+	buttonBasic: {
+		borderWidth: 2,
+		borderColor: "#338",
 		borderRadius: 5,
-		backgroundColor: "white",
-		marginBottom: 25,
-		padding: 10,
-		flexDirection: "row",
-		gap: 20,
-		marginHorizontal: 30,
-		alignItems: 'center',
+		height: 60,
+		width: 250,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: '#fff'
 	},
-	image: {
-		height: 75,
-		width: 75,
-		borderRadius: 75
-	},
-	textContainer: {
-		backgroundColor: "#338",
-		alignSelf: 'flex-start',
-		paddingHorizontal: 10,
-		borderRadius: 5,
-	},
-	title: {
-		fontSize: 16,
-		fontWeight: "500",
-		color: "#fff",
+	buttonBasicText: {
+		color: "#338",
+		fontWeight: "bold"
 	}
-
 })
