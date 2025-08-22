@@ -1,16 +1,21 @@
-const path = require('path')
-const { getConfig } = require('react-native-builder-bob/babel-config')
-const pkg = require('../package.json')
+/*!
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ */
 
-const root = path.resolve(__dirname, '..')
+const path = require("path")
+const { getConfig } = require("react-native-builder-bob/babel-config")
+const pkg = require("../package.json")
 
-module.exports = function (api) {
-	api.cache(true)
+const root = path.resolve(__dirname, "..")
+console.log("[BABEL] Transpiling:", __filename)
 
-	return getConfig(
-		{
-			presets: ['babel-preset-expo'],
-		},
-		{ root, pkg }
-	)
+module.exports = function(api) {
+    api.cache(true)
+
+    return getConfig({
+        presets: ["babel-preset-expo"],
+        plugins: ["react-native-reanimated/plugin"],
+    }, { root, pkg })
 }

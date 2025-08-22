@@ -1,3 +1,11 @@
+<!--
+ * @license
+ * Copyright (c) 2025 Johan Hoareau
+ * SPDX-License-Identifier: MIT
+ -->
+
+
+
 
 # Contributor Covenant Code of Conduct
 
