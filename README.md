@@ -10,6 +10,18 @@
 
 A library to create smooth and delightful animated transitions between screens
 
+
+| Basic stack navigation | stack navigation with list |
+|---|---|
+| <video src="https://github.com/user-attachments/assets/99aa99a2-cf51-4591-8d0a-5431604b6b9f" width="300" height="600" controls></video> | <video src="https://github.com/user-attachments/assets/9c04d682-bad5-46ea-a7cf-8bb7e9e78be9" width="300" height="600" controls></video> |
+
+
+
+⚠️This library is currently in its early development stages and has not been extensively tested in production environments.
+
+
+
+
 - [react-native-delightful-navigation](#react-native-delightful-navigation)
 	- [Why Choose This Library?](#why-choose-this-library)
 	- [Installation](#installation)
