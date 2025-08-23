@@ -28,14 +28,15 @@ type HandlerXScreenStateProps = {
 export default function HandlerXScreenState({ registerRef, transitionIsFinished, origin, children, landmarkRef, navigation }: HandlerXScreenStateProps) {
 	// const navigation = useNavigation()
 	const originRoute = useTransitionStore(state => state.origin?.route)
-	const isOriginRoute = originRoute === registerRef.current.route
+	const isOriginRoute = originRoute === registerRef?.current.route
 	const destinationRoute = useTransitionStore(state => state.destination?.route)
-	const isDestinationRoute = destinationRoute === registerRef.current.route
+	const isDestinationRoute = destinationRoute === registerRef?.current.route
 	const prepareBeforeBack = useTransitionStore(state => state.prepareBeforeBack)
 
 
 	// Initialization register
 	useEffect(() => {
+		if (!registerRef.current) return
 		const tempRegisterXComponents: InitialXData[] = []
 		const childrenArray = React.Children.toArray(children) as ElementToParseType[]
 		childrenArray.forEach((el) => parseTree(el, tempRegisterXComponents))

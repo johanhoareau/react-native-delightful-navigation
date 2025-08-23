@@ -74,7 +74,7 @@ export const HandlerXComponentState = ({
 	// Before navigation
 	useEffect(() => {
 		const isFromOriginRoute =
-			transitionOriginRoute === registerRef.current.route
+			transitionOriginRoute === registerRef?.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromOriginRoute) {
 			xComponentRef.current?.measure((_, __, width, height, pageX, pageY) => {
@@ -132,7 +132,7 @@ export const HandlerXComponentState = ({
 	// During navigation
 	useEffect(() => {
 		const isFromDestinationRoute =
-			transitionDestinationRoute === registerRef.current.route
+			transitionDestinationRoute === registerRef?.current.route
 
 		if (hasCorrespondenceIntoStoreOrigin && isFromDestinationRoute && statusTransition === "start transition") {
 			if (indexBackTransitionIntoHistory !== null) {
